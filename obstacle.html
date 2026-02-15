@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Canvas Game</title>
+    <style>
+        body { background-color: #222; color: white; text-align: center; }
+        /* The canvas is your drawing paper */
+        canvas { background-color: black; border: 2px solid white; }
+    </style>
+</head>
+<body>
+
+    <h1>WASD to Move</h1>
+    <canvas id="gameCanvas" width="400" height="400"></canvas>
+
+    <script>
+        // 1. SETUP: Find the canvas and get the "paintbrush" (ctx)
+        var canvas = document.getElementById("gameCanvas");
+        var ctx = canvas.getContext("2d");
+
+        // 2. VARIABLES: Where is the player right now?
+        var playerX = 180;
+        var playerY = 180;
+        var playerSize = 40;
+        var speed = 5;
+
+        // 3. THE ENGINE: This function runs over and over (the Game Loop)
+        function draw() {
+            // A. Clear the screen (wipe the old drawing)
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // B. Draw the player (a green square)
+            ctx.fillStyle = "lime";
+            ctx.fillRect(playerX, playerY, playerSize, playerSize);
+
+            // C. Tell the browser to run this function again immediately
+            requestAnimationFrame(draw);
+        }
+
+        // 4. CONTROLS: Listen for key presses
+        window.addEventListener("keydown", function(event) {
+            if (event.key === "w") { playerY -= speed; }
+            if (event.key === "s") { playerY += speed; }
+            if (event.key === "a") { playerX -= speed; }
+            if (event.key === "d") { playerX += speed; }
+        });
+
+        // Start the game loop
+        draw();
+    </script>
+</body>
+</html>
