@@ -2,6 +2,16 @@
 <html>
   <head>
     <title>Clicker Game</title>
+    <style>
+      .click-button{
+        background-color: green;
+        color: black;
+        
+        
+        
+      }
+        
+    </style>
   </head>
   <body>
     <h1>Monster Clicker</h1>
@@ -18,11 +28,12 @@
     </div>
 
 
-    <button id="click-button" onclick="addpoint()">CLICK ME!</button>
+    <button id="click-button" onclick="addpoint()">Click to get bones!</button>
+    <br>
     <button id ="buy-skeleton" onclick = "buffer()">
       Buy Skeleton (10 bones) <br> Increases BPC by 1 <br> Owned: 0
     </button>
-
+    <br>
     <a href = "index.html">Go Back to my main page</a>
 
     <script>
@@ -38,7 +49,7 @@
       function buffer() {
         if (bones >= skeletonCost){
           alert("You bought a skeleton")
-          bones = bones - 10
+          bones = bones - skeletonCost
           BPC = BPC + 1
           skeletonCost = Math.round(skeletonCost * 1.15)
           skeletonCnt = skeletonCnt + 1
@@ -49,7 +60,7 @@
       
         } 
         else{
-          alert("Bro not slick! You need 10 bones to buy this buff")
+          alert("You need" + skeletonCost+ " bones to buy a skeleton.")
         }
       }
     </script>
