@@ -9,8 +9,14 @@
     </style>
 </head>
 <body>
-
-    <h1>HP: <span id="hp">100</span> | Score: <span id="score">0</span></h1>
+    <h1>Obstacle Game</h1> 
+    <br>
+    <h1>Use Arrow Keys To Move</h1> 
+    <br>
+    <h1>Collide with the blue blocks</h1> 
+    <br>
+    <h1>Don't collide with the red blocks</h1> 
+    <h1>HP: <span id="hp">10</span> | Score: <span id="score">0</span></h1>
     <canvas id="gameCanvas" width="800" height="600"></canvas>
 
     <script>
@@ -18,7 +24,7 @@
         var ctx = canvas.getContext("2d");
 
         // Game State
-        var hp = 100;
+        var hp = 10;
         var score = 0;
         var enemies = [];
         var friends = []; 
@@ -34,7 +40,7 @@
                 x: Math.random() * (canvas.width - 20),
                 y: -20,
                 size: 20,
-                speed: 3
+                speed: 2
             });
         }, 3000);
 
@@ -117,13 +123,7 @@
             if (event.key === "ArrowLeft" && playerX >= 0) {
                 playerX -= speed;
             }
-            // Optional: Added Up/Down since canvas is tall
-            if (event.key === "ArrowUp" && playerY >= 0) {
-                playerY -= speed;
-            }
-            if (event.key === "ArrowDown" && playerY <= canvas.height - playerSize) {
-                playerY += speed;
-            }
+            
         });
 
         draw();
