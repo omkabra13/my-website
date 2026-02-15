@@ -17,7 +17,7 @@
         var ctx = canvas.getContext("2d");
 
         // Game State
-        var hp = 100;
+        var hp = 10;
         var score = 0;
         var enemies = [];
         var friends = []; // Your blue blocks
@@ -25,7 +25,7 @@
         var playerX = 380;
         var playerY = 540;
         var playerSize = 40;
-        var speed = 20;
+        var speed = 40;
 
         // SPAWN ENEMIES (Red)
         setInterval(function() {
@@ -35,7 +35,7 @@
                 size: 20,
                 speed: 3
             });
-        }, 1000);
+        }, 2000);
 
         // SPAWN FRIENDS (Blue)
         setInterval(function() {
@@ -63,7 +63,7 @@
 
                 // Collision with Red
                 if (playerX < e.x + e.size && playerX + playerSize > e.x && playerY < e.y + e.size && playerY + playerSize > e.y) {
-                    hp -= 20;
+                    hp -= 1;
                     enemies.splice(i, 1);
                     i--;
                 }
@@ -74,11 +74,14 @@
             for (var j = 0; j < friends.length; j++) {
                 var f = friends[j];
                 f.y += f.speed; // Make them fall
+                if (f.y > 600){
+                    hp -= 1
+                } 
                 ctx.fillRect(f.x, f.y, f.size, f.size);
 
                 // Collision with Blue
                 if (playerX < f.x + f.size && playerX + playerSize > f.x && playerY < f.y + f.size && playerY + playerSize > f.y) {
-                    score += 10;
+                    score += 1;
                     friends.splice(j, 1);
                     j--;
                 }
@@ -103,13 +106,7 @@
             if (event.key === "ArrowLeft") {
                 if (playerX >= 10) { playerX -= speed; }
             }
-            // I added Up and Down for you too!
-            if (event.key === "ArrowUp") {
-                if (playerY >= 10) { playerY -= speed; }
-            }
-            if (event.key === "ArrowDown") {
-                if (playerY <= 550) { playerY += speed; }
-            }
+           
         });
 
         draw();
