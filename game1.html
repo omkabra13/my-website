@@ -13,10 +13,14 @@
     <div class="bones-click">
         Bones Per Click: <span id="BPC">1</span>
     </div>
+    <div class="bones-second">
+        Bones Per Second: <span id="BPS">0</span>
+    </div>
+
 
     <button id="click-button" onclick="addpoint()">CLICK ME!</button>
-    <button id ="buy-buffer" onclick = "buffer()">
-      Buy Skeleton for 10 bones <br> Increases BPC by 1
+    <button id ="buy-skeleton" onclick = "buffer()">
+      Buy Skeleton (10 bones) <br> Increases BPC by 1 <br> Owned: 0
     </button>
 
     <a href = "index.html">Go Back to my main page</a>
@@ -24,17 +28,24 @@
     <script>
       var bones = 0;
       var BPC = 1
+      var BPS = 0
+      var skeletonCost = 10
+      var skeletonCnt = 0
       function addpoint() {
         bones = bones + BPC;
         document.getElementById("bones").innerHTML = bones;
       }
       function buffer() {
-        if (bones >= 10){
+        if (bones >= skeletonCost){
           alert("You bought a skeleton")
           bones = bones - 10
           BPC = BPC + 1
+          skeletonCost = Math.round(skeletonCost * 1.15)
+          skeletonCnt = skeletonCnt + 1
+          document.getElementById("buy-skeleton").innerHTML = "Buy Skeleton (" + skeletonCost + " bones)" <br> "Increases BPC by 1" <br> "Owned: " + skeletonCnt;
           document.getElementById("bones").innerHTML = bones;
           document.getElementById("BPC").innerHTML = BPC;
+          
       
         } 
         else{
