@@ -4,107 +4,102 @@
     <title>Simple Canvas Game</title>
     <style>
         body { background-color: #222; color: white; text-align: center; font-family: sans-serif; }
+        /* Centering the game board */
         canvas { background-color: black; border: 2px solid white; display: block; margin: 0 auto; }
-        #ui { margin-bottom: 10px; }
     </style>
 </head>
 <body>
-
-    <div id="ui">
-        <h1>HP: <span id="hp">10</span> | Score: <span id="score">0</span></h1>
-    </div>
-
-    <canvas id="gameCanvas" width="800" height="600"></canvas>
-
-    <div id="gameOverScreen" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.9); padding: 40px; border: 3px solid red; color: white; z-index: 10;">
+    <h1>Obstacle Game</h1> 
+    <h1>Use Arrow Keys To Move</h1> 
+    <h1>Collide with the blue blocks</h1>
+    <h1>Don't collide with the red blocks</h1> 
+    <h1>HP: <span id="hp">10</span> | Score: <span id="score">0</span></h1>
+    <div id="gameOverScreen" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.8); padding: 20px; border: 2px solid red; color: white; z-index: 10;">
         <h1>GAME OVER</h1>
         <p>Final Score: <span id="finalScore">0</span></p>
-        <button onclick="location.reload()" style="padding: 10px 20px; cursor: pointer; background: red; color: white; border: none; font-weight: bold; font-size: 1.2em;">RESTART</button>
+        <button onclick="location.reload()" style="padding: 10px 20px; cursor: pointer; background: red; color: white; border: none; font-weight: bold;">TRY AGAIN</button>
     </div>
-
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    
     <script>
+        
         var canvas = document.getElementById("gameCanvas");
         var ctx = canvas.getContext("2d");
 
         // Game State
-        var hp = 10;
+        var hp = 20;
         var score = 0;
         var enemies = [];
         var friends = []; 
-        var spawnTimer = 0; // The counter that controls speed
 
         var playerX = 380;
         var playerY = 540;
         var playerSize = 40;
-        var speed = 25;
+        var speed = 40;
+
+        var done = 0;
+
+        // SPAWN ENEMIES (Red) - Every 1 second
+        setInterval(function() {
+            enemies.push({
+                x: Math.random() * (canvas.width - 20),
+                y: -20,
+                size: 20,
+                speed: 2+score*0.3
+            });
+        }, 1800-score*100);
+
+        // SPAWN FRIENDS (Blue) - Every 2 seconds
+        setInterval(function() {
+            friends.push({
+                x: Math.random() * (canvas.width - 20),
+                y: -20,
+                size: 20,
+                speed: 1.5+score*0.2
+            });
+        }, 2300-score*150);
 
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // 1. DYNAMIC SPAWNING (Replaces setInterval)
-            spawnTimer++;
-            
-            // This number gets smaller as score goes up, making it spawn FASTER
-            // Math.max(8, ...) keeps it from becoming a solid wall
-            var threshold = Math.max(8, 40 - (score * 1.5)); 
-
-            if (spawnTimer >= threshold) {
-                // Spawn Red Enemy
-                enemies.push({
-                    x: Math.random() * (canvas.width - 20),
-                    y: -20,
-                    size: 20,
-                    speed: 3 + (score * 0.15) // Fall faster as score grows
-                });
-                
-                // Spawn Blue Friend every few cycles
-                if (Math.random() > 0.6) {
-                    friends.push({
-                        x: Math.random() * (canvas.width - 20),
-                        y: -20,
-                        size: 20,
-                        speed: 2 + (score * 0.1)
-                    });
-                }
-                spawnTimer = 0; 
-            }
-
-            // 2. Draw Player (Green)
+            // 1. Draw Player (Green)
             ctx.fillStyle = "lime";
             ctx.fillRect(playerX, playerY, playerSize, playerSize);
 
-            // 3. Handle Enemies (Red)
+            // 2. Handle Enemies (Red)
             ctx.fillStyle = "red";
             for (var i = 0; i < enemies.length; i++) {
                 var e = enemies[i];
                 e.y += e.speed; 
                 ctx.fillRect(e.x, e.y, e.size, e.size);
 
-                // Collision: Hit Red = Lose 1 HP
+                // Collision with Red: Lose 1 HP
                 if (playerX < e.x + e.size && playerX + playerSize > e.x && playerY < e.y + e.size && playerY + playerSize > e.y) {
                     hp -= 1;
                     enemies.splice(i, 1);
                     i--;
-                } else if (e.y > canvas.height) {
+                } 
+                // Remove if off screen
+                else if (e.y > canvas.height) {
                     enemies.splice(i, 1);
                     i--;
                 }
             }
 
-            // 4. Handle Friends (Blue)
+            // 3. Handle Friends (Blue)
             ctx.fillStyle = "deepskyblue";
             for (var j = 0; j < friends.length; j++) {
                 var f = friends[j];
                 f.y += f.speed; 
                 ctx.fillRect(f.x, f.y, f.size, f.size);
 
-                // Collision: Catch Blue = +1 Score
+                // Collision with Blue: +1 Score
                 if (playerX < f.x + f.size && playerX + playerSize > f.x && playerY < f.y + f.size && playerY + playerSize > f.y) {
                     score += 1;
                     friends.splice(j, 1);
                     j--;
                 } 
-                // Miss Blue = Lose 1 HP
+                // MISS the Blue: Lose 1 HP
                 else if (f.y > canvas.height) {
                     hp -= 1; 
                     friends.splice(j, 1);
@@ -116,24 +111,29 @@
             document.getElementById("hp").innerText = hp;
             document.getElementById("score").innerText = score;
 
-            // Check Death - Show Custom Screen
-            if (hp <= 0) {
+            // Check Death
+            if (hp <= 0 & done === 0) {
                 document.getElementById("gameOverScreen").style.display = "block";
+    
+                // 2. Put the final score inside it
                 document.getElementById("finalScore").innerText = score;
-                return; // Stops the game loop
+    
+                // 3. Stop the game from continuing in the background
+                return;
             }
 
             requestAnimationFrame(draw);
         }
 
-        // Only Left and Right Arrows
+        // Controls
         window.addEventListener("keydown", function(event) {
-            if (event.key === "ArrowRight") {
-                if (playerX <= 750) { playerX += speed; }
+            if (event.key === "ArrowRight" && playerX <= canvas.width - playerSize) {
+                playerX += speed;
             }
-            if (event.key === "ArrowLeft") {
-                if (playerX >= 10) { playerX -= speed; }
+            if (event.key === "ArrowLeft" && playerX >= 0) {
+                playerX -= speed;
             }
+            
         });
 
         draw();
