@@ -17,13 +17,24 @@
         var canvas = document.getElementById("gameCanvas");
         var ctx = canvas.getContext("2d");
 
+        var friends= [];
+        var enemies = [];
 
         
         var playerX = 380;
         var playerY = 540;
         var playerSize = 40;
         var speed = 20;
-
+        
+        setInterval(function() {
+            var newEnemy = {
+                x: Math.random() * (780),
+                y: -20,
+                size: 20,
+                speed: 3
+            };
+            enemies.push(newEnemy);
+        }, 1000); 
       
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
