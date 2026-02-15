@@ -27,7 +27,7 @@
         var ctx = canvas.getContext("2d");
 
         // Game State
-        var hp = 10;
+        var hp = 20;
         var score = 0;
         var enemies = [];
         var friends = []; 
@@ -45,9 +45,9 @@
                 x: Math.random() * (canvas.width - 20),
                 y: -20,
                 size: 20,
-                speed: 3
+                speed: 2+score*0.2
             });
-        }, 1500);
+        }, 1800-score*50);
 
         // SPAWN FRIENDS (Blue) - Every 2 seconds
         setInterval(function() {
@@ -55,9 +55,9 @@
                 x: Math.random() * (canvas.width - 20),
                 y: -20,
                 size: 20,
-                speed: 2
+                speed: 1.5
             });
-        }, 2000);
+        }, 2300-score*75);
 
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
