@@ -10,39 +10,42 @@
 </head>
 <body>
 
-    <h1>WASD to Move</h1>
-    <canvas id="gameCanvas" width="400" height="400"></canvas>
+    <h1>Arrow Keys to Move, </h1>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
 
     <script>
-        // 1. SETUP: Find the canvas and get the "paintbrush" (ctx)
         var canvas = document.getElementById("gameCanvas");
         var ctx = canvas.getContext("2d");
 
-        // 2. VARIABLES: Where is the player right now?
-        var playerX = 180;
-        var playerY = 180;
-        var playerSize = 40;
-        var speed = 5;
 
-        // 3. THE ENGINE: This function runs over and over (the Game Loop)
+        
+        var playerX = 380;
+        var playerY = 20;
+        var playerSize = 40;
+        var speed = 10;
+
+      
         function draw() {
-            // A. Clear the screen (wipe the old drawing)
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // B. Draw the player (a green square)
+           
             ctx.fillStyle = "lime";
             ctx.fillRect(playerX, playerY, playerSize, playerSize);
 
-            // C. Tell the browser to run this function again immediately
+          
             requestAnimationFrame(draw);
         }
 
-        // 4. CONTROLS: Listen for key presses
+        
         window.addEventListener("keydown", function(event) {
-            if (event.key === "w") { playerY -= speed; }
-            if (event.key === "s") { playerY += speed; }
-            if (event.key === "a") { playerX -= speed; }
-            if (event.key === "d") { playerX += speed; }
+            if (event.key === "ArrowRight") { 
+                if (playerX <= 750){playerX += speed; }
+            }
+            if (event.key === "ArrowLeft") { 
+                if (playerX >= 10){playerX -= speed; }
+            }
+            
+            
         });
 
         // Start the game loop
