@@ -47,7 +47,7 @@
                 size: 20,
                 speed: 2+score*0.3
             });
-        }, 1800-score*50);
+        }, 1800-score*100);
 
         // SPAWN FRIENDS (Blue) - Every 2 seconds
         setInterval(function() {
@@ -57,7 +57,7 @@
                 size: 20,
                 speed: 1.5+score*0.2
             });
-        }, 2300-score*75);
+        }, 2300-score*150);
 
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
