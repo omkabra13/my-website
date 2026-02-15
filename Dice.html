@@ -4,15 +4,22 @@
     <title>  Dice Simulator </title>
   </head>
   <body>
-    <h1> Dice Simulator </h1>
+    
     <br>
     <br>
-    <img id = "dice", src="Dice1.png" alt="the dice">
-    <br>
-    <br>
-    <button id = "roll" onclick = rollDice() style = "font-size: 30px; background-color: lightgreen; color: red; border-radius: 10px;">
-      ROLL
-    </button>
+    <div style="text-align: center;">
+      <h1> Dice Simulator </h1>
+      <br>
+      <br>
+      <img id = "dice" src="Dice1.png" alt="the dice" style = "width:100px;height:100px;">
+      <br>
+      <br>
+      <button id = "roll" onclick = rollDice() style = "font-size: 60px; background-color: lightgreen; color: red; border-radius: 20px;">
+        ROLL
+      </button>
+    </div>
+    
+  
     <script>
       var diceImg = document.getElementById("dice");
       var x = 1;
