@@ -7,6 +7,38 @@
     <h1> Dice Simulator </h1>
     <br>
     <br>
-    <img src="Dice1" alt="A description of the image content">
+    <img id = "dice", src="Dice1.png" alt="the dice">
+    <br>
+    <br>
+    <button id = "roll" onclick = rollDice() style = "font-size: 30px; background-color: lightgreen; color: red; border-radius: 10px;">
+      ROLL
+    </button>
+    <script>
+      var diceImg = document.getElementById("dice");
+      var x = 1;
+      function rollDice(){
+        x = Math.floor((Math.random() * 6) + 1);
+        if (x === 1){
+        diceImg.src = "Dice1.png";
+        }
+        if (x === 2){
+        diceImg.src = "Dice2.png";
+        }
+        if (x === 3){
+        diceImg.src = "Dice3.png";
+        }
+        if (x === 4){
+        diceImg.src = "Dice4.png";
+        }
+        if (x === 5){
+        diceImg.src = "Dice5.png";
+        }
+        if (x === 6){
+        diceImg.src = "Dice6.png";
+        }
+      }
+      
+        
+    </script>
   </body>
 </html>
