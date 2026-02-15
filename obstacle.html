@@ -76,6 +76,8 @@
                 f.y += f.speed; // Make them fall
                 if (f.y > 600){
                     hp -= 1
+                    friends.splice(j,1)
+                    j--;
                 } 
                 ctx.fillRect(f.x, f.y, f.size, f.size);
 
