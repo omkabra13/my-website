@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Clicker Game</title>
+  </head>
+  <body>
+    <h1>Clicker Game</h1>
+    <p>Click the button to collect points! </p>
+
+    <div class="score-board">
+        Score: <span id="score">0</span>
+    </div>
+
+    <button id="click-button" onclick="addpoint()">CLICK ME!</button>
+
+    <a href = "index.html">Go Back to my main page</a>
+
+    <script>
+      var score = 0;
+      var increase = 1
+      function addpoint() {
+        score = score + increase;
+        document.getElementById("score").innerHTML = score;
+      }
+    </script>
+
+    
+                
