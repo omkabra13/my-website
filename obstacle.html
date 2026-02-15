@@ -10,16 +10,19 @@
 </head>
 <body>
     <h1>Obstacle Game</h1> 
-    
     <h1>Use Arrow Keys To Move</h1> 
-    
-    <h1>Collide with the blue blocks</h1> 
-    
+    <h1>Collide with the blue blocks</h1>
     <h1>Don't collide with the red blocks</h1> 
     <h1>HP: <span id="hp">10</span> | Score: <span id="score">0</span></h1>
+    <div id="gameOverScreen" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.8); padding: 20px; border: 2px solid red; color: white; z-index: 10;">
+        <h1>GAME OVER</h1>
+        <p>Final Score: <span id="finalScore">0</span></p>
+        <button onclick="location.reload()" style="padding: 10px 20px; cursor: pointer; background: red; color: white; border: none; font-weight: bold;">TRY AGAIN</button>
+    </div>
     <canvas id="gameCanvas" width="800" height="600"></canvas>
-
+    
     <script>
+        
         var canvas = document.getElementById("gameCanvas");
         var ctx = canvas.getContext("2d");
 
@@ -110,9 +113,13 @@
 
             // Check Death
             if (hp <= 0 & done === 0) {
-                alert("Game Over! Score: " + score);
-                done = 1
-                location.reload(); 
+                document.getElementById("gameOverScreen").style.display = "block";
+    
+                // 2. Put the final score inside it
+                document.getElementById("finalScore").innerText = score;
+    
+                // 3. Stop the game from continuing in the background
+                return;
             }
 
             requestAnimationFrame(draw);
