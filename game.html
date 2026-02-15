@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Super Clicker Game</title>
+    <style>
+        body { text-align: center; font-family: sans-serif; background-color: #f0f0f0; padding-top: 50px; }
+        #click-button { padding: 20px 40px; font-size: 24px; cursor: pointer; background-color: #4CAF50; color: white; border: none; border-radius: 10px; }
+        #click-button:active { background-color: #45a049; transform: scale(0.95); }
+        h1 { color: #333; }
+        .score-board { font-size: 48px; margin: 20px; color: #2ecc71; }
+    </style>
+</head>
+<body>
+
+    <h1>Monster Clicker!</h1>
+    <p>Click the button to collect points!</p>
+
+    <div class="score-board">
+        Score: <span id="score">0</span>
+    </div>
+
+    <button id="click-button" onclick="addPoint()">CLICK ME!</button>
+
+    <br><br>
+    <a href="index.html">Go Back Home</a>
+
+    <script>
+        // This is the "Brain" of the game
+        var score = 0;
+
+        function addPoint() {
+            score = score + 1; // Increase score by 1
+            document.getElementById("score").innerHTML = score; // Update the screen
+            
+            // A little surprise when you hit 10!
+            if (score === 10) {
+                alert("Nice! You reached 10 points!");
+            }
+        }
+    </script>
+
+</body>
+</html>
