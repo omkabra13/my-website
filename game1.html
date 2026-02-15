@@ -12,6 +12,7 @@
     </div>
 
     <button id="click-button" onclick="addpoint()">CLICK ME!</button>
+    <button id ="buy-buffer" onclick = "buffer()">Buy buffer for 10</button>
 
     <a href = "index.html">Go Back to my main page</a>
 
@@ -22,6 +23,15 @@
         score = score + increase;
         document.getElementById("score").innerHTML = score;
       }
+      function buffer() {
+        if (score >= 10){
+          alert("You bought a buff")
+          score = score - 10
+          document.getElementById("score").innerHTML = score;
+        } 
+        else (score < 10){
+          alert("Bro not slick! You need 10 score to buy this buff")
+        }
     </script>
 
     
