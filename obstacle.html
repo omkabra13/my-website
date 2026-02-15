@@ -3,63 +3,115 @@
 <head>
     <title>Simple Canvas Game</title>
     <style>
-        body { background-color: #222; color: white; text-align: center; }
-        /* The canvas is your drawing paper */
-        canvas { background-color: black; border: 2px solid white; }
+        body { background-color: #222; color: white; text-align: center; font-family: sans-serif; }
+        canvas { background-color: black; border: 2px solid white; display: block; margin: 0 auto; }
     </style>
 </head>
 <body>
 
-    <h1>Arrow Keys to Move, </h1>
+    <h1>HP: <span id="hp">100</span> | Score: <span id="score">0</span></h1>
     <canvas id="gameCanvas" width="800" height="600"></canvas>
 
     <script>
         var canvas = document.getElementById("gameCanvas");
         var ctx = canvas.getContext("2d");
 
-        var friends= [];
+        // Game State
+        var hp = 100;
+        var score = 0;
         var enemies = [];
+        var friends = []; // Your blue blocks
 
-        
         var playerX = 380;
         var playerY = 540;
         var playerSize = 40;
         var speed = 20;
-        
+
+        // SPAWN ENEMIES (Red)
         setInterval(function() {
-            var newEnemy = {
-                x: Math.random() * (780),
+            enemies.push({
+                x: Math.random() * 780,
                 y: -20,
                 size: 20,
                 speed: 3
-            };
-            enemies.push(newEnemy);
-        }, 1000); 
-      
+            });
+        }, 1000);
+
+        // SPAWN FRIENDS (Blue)
+        setInterval(function() {
+            friends.push({
+                x: Math.random() * 780,
+                y: -20,
+                size: 20,
+                speed: 2
+            });
+        }, 2000); // Spawns every 2 seconds
+
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-           
+            // 1. Draw Player
             ctx.fillStyle = "lime";
             ctx.fillRect(playerX, playerY, playerSize, playerSize);
 
-          
+            // 2. Handle Enemies (Red)
+            ctx.fillStyle = "red";
+            for (var i = 0; i < enemies.length; i++) {
+                var e = enemies[i];
+                e.y += e.speed; // Make them fall
+                ctx.fillRect(e.x, e.y, e.size, e.size);
+
+                // Collision with Red
+                if (playerX < e.x + e.size && playerX + playerSize > e.x && playerY < e.y + e.size && playerY + playerSize > e.y) {
+                    hp -= 20;
+                    enemies.splice(i, 1);
+                    i--;
+                }
+            }
+
+            // 3. Handle Friends (Blue)
+            ctx.fillStyle = "deepskyblue";
+            for (var j = 0; j < friends.length; j++) {
+                var f = friends[j];
+                f.y += f.speed; // Make them fall
+                ctx.fillRect(f.x, f.y, f.size, f.size);
+
+                // Collision with Blue
+                if (playerX < f.x + f.size && playerX + playerSize > f.x && playerY < f.y + f.size && playerY + playerSize > f.y) {
+                    score += 10;
+                    friends.splice(j, 1);
+                    j--;
+                }
+            }
+
+            // Update Text & Check Death
+            document.getElementById("hp").innerText = hp;
+            document.getElementById("score").innerText = score;
+
+            if (hp <= 0) {
+                alert("Game Over! Your score: " + score);
+                location.reload(); 
+            }
+
             requestAnimationFrame(draw);
         }
 
-        
         window.addEventListener("keydown", function(event) {
-            if (event.key === "ArrowRight") { 
-                if (playerX <= 750){playerX += speed; }
+            if (event.key === "ArrowRight") {
+                if (playerX <= 750) { playerX += speed; }
             }
-            if (event.key === "ArrowLeft") { 
-                if (playerX >= 10){playerX -= speed; }
+            if (event.key === "ArrowLeft") {
+                if (playerX >= 10) { playerX -= speed; }
             }
-            
-            
+            // I added Up and Down for you too!
+            if (event.key === "ArrowUp") {
+                if (playerY >= 10) { playerY -= speed; }
+            }
+            if (event.key === "ArrowDown") {
+                if (playerY <= 550) { playerY += speed; }
+            }
         });
 
-        // Start the game loop
         draw();
     </script>
 </body>
