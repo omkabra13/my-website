@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+  <h1>Stopwatch</h1>
+  <h2 id="time">0</h2>
+
+  <button onclick="start()">Start</button>
+  <button onclick="stop()">Stop</button>
+  <button onclick="reset()">Reset</button>
+
+  <script>
+    var seconds = 0;
+    var timer; // This holds the "loop"
+
+    function start() {
+      // Check if timer is already running to avoid speeding it up
+      if (!timer) {
+        timer = setInterval(function() {
+          seconds++;
+          document.getElementById("time").innerHTML = seconds;
+        }, 1000); // 1000ms = 1 second
+      }
+    }
+
+    function stop() {
+      clearInterval(timer); // Stops the loop
+      timer = null;         // Clears the variable so we can start again
+    }
+
+    function reset() {
+      stop();               // Stop the timer first
+      seconds = 0;          // Set count back to 0
+      document.getElementById("time").innerHTML = seconds;
+    }
+  </script>
+
+</body>
+</html>
