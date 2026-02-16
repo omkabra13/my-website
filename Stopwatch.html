@@ -8,48 +8,38 @@
   <button onclick="start()">Start</button>
   <button onclick="stop()">Stop</button>
   <button onclick="reset()">Reset</button>
-
-  <script>
-    var seconds = 0;
-    var timer; // This holds the "loop"
-    
-    
+  
+<script>
+    var totalSeconds = 0; // Keep a "Grand Total"
+    var timer; 
 
     function start() {
-      // Check if timer is already running to avoid speeding it up
       if (!timer) {
         timer = setInterval(function() {
-          seconds++;
-          var minutes = Math.trunc(seconds / 60);
-          seconds -= 60*minutes
-          var hours = Math.trunc(minutes/60);
-          minutes-= 60*hours
-          if (seconds < 10){
-            var displaySec = "0"+seconds
-          }
-          else{
-            var displaySec = seconds
-          }
-          if (minutes < 10){
-            var displayMins = "0"+minutes
-          }
-          else{
-            var displayMins = minutes
-          }
+          totalSeconds++; // Only change the grand total
           
-          document.getElementById("time").innerHTML = hours+":"+displayMins+":"+displaySec;
-        }, 1000); // 1000ms = 1 second
+          // Calculate display numbers without breaking the total
+          var hours = Math.trunc(totalSeconds / 3600);
+          var minutes = Math.trunc((totalSeconds % 3600) / 60);
+          var seconds = totalSeconds % 60;
+
+          // Your "leading zero" logic works great!
+          var displaySec = seconds < 10 ? "0" + seconds : seconds;
+          var displayMins = minutes < 10 ? "0" + minutes : minutes;
+          
+          document.getElementById("time").innerHTML = hours + ":" + displayMins + ":" + displaySec;
+        }, 1000);
       }
     }
 
     function stop() {
-      clearInterval(timer); // Stops the loop
-      timer = null;         // Clears the variable so we can start again
+      clearInterval(timer);
+      timer = null;
     }
 
     function reset() {
-      stop();               // Stop the timer first
-      seconds = 0;          // Set count back to 0
+      stop();
+      totalSeconds = 0; // Reset the grand total
       document.getElementById("time").innerHTML = "0:00:00";
     }
   </script>
