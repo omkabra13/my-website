@@ -113,4 +113,158 @@
     <div class="btn-group">
         <button id="start-btn" onclick="startGame()">Start Game</button>
         <button id="retry-btn" class="retry-btn" onclick="retryLevel()" style="display:none;">Try Level Again</button>
-        <button id="restart-btn
+        <button id="restart-btn" onclick="startGame()" style="display:none;">Complete Restart</button>
+    </div>
+    
+    <div id="message"></div>
+    
+    <div id="stats-panel">
+        <span id="final-cps"></span> | <span id="final-wpm"></span>
+    </div>
+</div>
+
+<script>
+    const easy_words = ["bat","dog","toy","cat","rat","law","mud","boy","the","she","red","pop","lie","bay","hay","can","sad","mad","cap","rap","met","fad","hop","top","tap","lap","lie","bag","ham","ray","say","tie","bit","hit","hat","bet","bid","lid","pad","and","tan","tar","eat","ate","lag","rag","tag","kid","dip","rip","lip","pod","rod","nod","his","sis","gem","ant","wad","win","nap","way","pay","day","van","mom","dad","dot","rot","tip","hen","tin","fee","tee","tea","pea","bee","sea","see","men","man","did","sim","pin","fib","yay","may","pot","pan","run","ran","ton","put","hut","but","cut","pit","vat"];
+    const medium_words = ["lemon","cheese","happy","angry","tomato","carve","tattoo","water","walks","visit","liver","flight","height","skirts","house","train","spoon","tiger","zebra","doctor","teach","study","juice","bottle","never","peace","donor","python","coding","uncle","sleeps","table","wonder","growth","forest","river","yellow","purple","cycle","pillow","school","queen","yogurt","bouncy","flavor","guitar","piano","breeze","sunny","window","marvel","gloves","framed","sweet","dirty","clean","apple","coffee","button","refer","climb","minute","light","shelf","wobble","tired","party","brain","vault","tennis","winter","cover","paper","pencil","hello"];
+    const hard_words = ["congratulations","absolutely","photosynthesis","monstrosity","university","cheeseburger","accommodate","suburban","pizazz","assuming","stewardess","xylophone","overzealous","withdrawal","wednesday","vulnerable","visualization","versatile","veterinary","vaccination","vegetarian","unanimous","transmission","trajectory","temporary","tournament","temperature","surveillance","psychology","responsibility","recommendation","pronunciation","practicioner","plagiarism","pilgrimage","philosophy","participation","nutritious","necessarily","miscellaneous","marshmallows","mayonnaise","leprechaun","limousine","kindergarten","knowledgeable","interference","inflammation","handkerchief","fluorescent","extraordinary","pharmaceutical","exhiliration","environmental","disappointment","choreography","circumstantial","cauliflower","cantaloupe","auditorium","apostrophe","amphitheater","advantageous","acknowledgement","abbreviation","abundant","accommodation","adjustment","ambidextrous","asymmetrical","auxiliary","bachelorette","bureaucracy","behavioral","boulevard","camouflage","determination","differentiation","description","dysfunctional","impressionable","enthusiastic","entrepreneur","eavesdropping","exaggerated","fascinating","governmental","hygienic","immediately","individuality","interpretation","laboratory","labyrinth","lieutenant","lightning","legitimate","likelihood","maintenance","masquerade","medicinal","mezzanine","medieval","mischievious","misunderstood","pneumonia","noticeable","opportunity","overwhelming","picturesque","pilgrimage","prohibitive","quadruple","ridiculous","sacrilegious","rudimentary","chandelier","sophomore","superfluous","susceptible","suspicious","synonymous","tomorrow","zucchini"];
+
+    const levels = [
+        { count: 1, type: "easy",   time: 10 }, 
+        { count: 2, type: "easy",   time: 10 }, 
+        { count: 1, type: "medium", time: 10 }, 
+        { count: 4, type: "easy",   time: 10 }, 
+        { count: 3, type: "medium", time: 10 }, // L5: 1.5 CPS
+        { count: 6, type: "easy",   time: 10 }, 
+        { count: 4, type: "medium", time: 10 }, 
+        { count: 8, type: "easy",   time: 10 }, 
+        { count: 6, type: "medium", time: 10 }, 
+        { count: 3, type: "hard",   time: 10 }, // L10: 3.5 CPS
+        { count: 8, type: "medium", time: 10 }, 
+        { count: 4, type: "hard",   time: 10 }, 
+        { count: 9, type: "medium", time: 10 }, // L13: Adjusted to 9 words
+        { count: 5, type: "hard",   time: 10 }, // L14: 6.0 CPS
+        { count: 16, type: "medium",time: 10 }, 
+        { count: 6, type: "hard",   time: 10 }, // L16: 7.5 CPS
+        { count: 20, type: "easy",  time: 10 }, 
+        { count: 8, type: "hard",   time: 10 }, // L18: 9.5 CPS
+        { count: 9, type: "hard",   time: 10 }, // L19: 10.5 CPS
+        { count: 11, type: "hard",  time: 10 }  // L20: 12.0+ CPS
+    ];
+
+    let currentLevel = 0;
+    let targetText = "";
+    let timeLeft = 10;
+    let timerObj;
+    let totalChars = 0;
+    let totalTimeTaken = 0;
+
+    const wordDisplay = document.getElementById("word-display");
+    const userInput = document.getElementById("user-input");
+    const timerDisplay = document.getElementById("timer");
+    const liveCpsDisplay = document.getElementById("live-cps");
+    const levelInfo = document.getElementById("level-info");
+    const message = document.getElementById("message");
+    
+    const startBtn = document.getElementById("start-btn");
+    const retryBtn = document.getElementById("retry-btn");
+    const restartBtn = document.getElementById("restart-btn");
+    const statsPanel = document.getElementById("stats-panel");
+
+    function startGame() {
+        currentLevel = 0; totalChars = 0; totalTimeTaken = 0;
+        message.innerHTML = ""; statsPanel.style.display = "none";
+        startBtn.style.display = "none"; retryBtn.style.display = "none";
+        restartBtn.style.display = "none"; userInput.disabled = false;
+        loadLevel();
+    }
+
+    function retryLevel() {
+        message.innerHTML = ""; retryBtn.style.display = "none";
+        restartBtn.style.display = "none"; userInput.disabled = false;
+        loadLevel();
+    }
+
+    function loadLevel() {
+        userInput.value = ""; userInput.focus();
+        let config = levels[currentLevel];
+        levelInfo.innerHTML = "Level " + (currentLevel + 1) + " / 20";
+        targetText = generatePhrase(config.count, config.type);
+        wordDisplay.innerHTML = targetText;
+        timeLeft = config.time;
+        timerDisplay.innerHTML = timeLeft + "s";
+        liveCpsDisplay.innerHTML = "CPS: 0.00";
+        clearInterval(timerObj);
+        timerObj = setInterval(countDown, 1000);
+    }
+
+    function generatePhrase(count, type) {
+        let list = (type === "hard") ? hard_words : (type === "medium") ? medium_words : easy_words;
+        let selected = [];
+        for(let i=0; i<count; i++) { selected.push(list[Math.floor(Math.random() * list.length)]); }
+        return selected.join(" ");
+    }
+
+    function countDown() {
+        timeLeft--;
+        timerDisplay.innerHTML = timeLeft + "s";
+        if (timeLeft <= 0) { gameOver("TIME OUT!"); }
+    }
+
+    userInput.addEventListener("input", function() {
+        let elapsed = levels[currentLevel].time - timeLeft;
+        if (elapsed > 0) {
+            let currentCPS = (userInput.value.length / elapsed).toFixed(2);
+            liveCpsDisplay.innerHTML = "CPS: " + currentCPS;
+        }
+    });
+
+    userInput.addEventListener("keydown", function(e) {
+        if (e.key === "Enter") {
+            if (userInput.value.trim() === targetText) {
+                totalChars += targetText.length;
+                totalTimeTaken += (levels[currentLevel].time - timeLeft);
+                checkLevelUp();
+            } else { gameOver("TYPO!"); }
+        }
+    });
+
+    function checkLevelUp() {
+        clearInterval(timerObj);
+        currentLevel++;
+        if (currentLevel < levels.length) {
+            message.className = "success";
+            message.innerHTML = "Lvl " + currentLevel + " Pass!";
+            setTimeout(() => { message.innerHTML = ""; loadLevel(); }, 700);
+        } else { finishGame(); }
+    }
+
+    function finishGame() {
+        message.className = "success";
+        message.innerHTML = "🏆 GODLIKE SPEED!";
+        wordDisplay.innerHTML = "Run Complete";
+        showStats();
+        restartBtn.style.display = "inline-block";
+    }
+
+    function gameOver(reason) {
+        clearInterval(timerObj);
+        userInput.disabled = true;
+        message.className = "error";
+        message.innerHTML = reason + " (Level " + (currentLevel + 1) + ")";
+        showStats();
+        retryBtn.style.display = "inline-block";
+        restartBtn.style.display = "inline-block";
+    }
+
+    function showStats() {
+        if (totalTimeTaken === 0) return;
+        statsPanel.style.display = "block";
+        const avgCps = (totalChars / totalTimeTaken).toFixed(2);
+        const avgWpm = ((totalChars / 5) / (totalTimeTaken / 60)).toFixed(1);
+        document.getElementById("final-cps").innerHTML = "Average CPS: " + avgCps;
+        document.getElementById("final-wpm").innerHTML = "Average WPM: " + avgWpm;
+    }
+</script>
+
+</body>
+</html>
