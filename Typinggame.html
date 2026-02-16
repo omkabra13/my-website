@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ultimate Typing Game</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #2c3e50;
+            color: white;
+            padding-top: 50px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #34495e;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        #word-display {
+            font-size: 35px;
+            margin: 30px 0;
+            min-height: 50px;
+            color: #f1c40f;
+            word-wrap: break-word;
+        }
+        #timer {
+            font-size: 24px;
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        input {
+            font-size: 22px;
+            padding: 12px;
+            width: 80%;
+            border-radius: 8px;
+            border: none;
+            outline: none;
+        }
+        button {
+            font-size: 20px;
+            padding: 15px 40px;
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover { background-color: #2ecc71; }
+        #message {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .success { color: #2ecc71; }
+        .error { color: #e74c3c; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Ultimate Typing Game</h1>
+    <h3 id="level-info">Level 1</h3>
+    <div id="timer">Time Remaining: 0s</div>
+    
+    <div id="word-display">Press Start to Begin</div>
+    
+    <input type="text" id="user-input" placeholder="Type here and press Enter..." autocomplete="off" disabled>
+    <br>
+    <button id="action-btn" onclick="startGame()">Start Game</button>
+    
+    <div id="message"></div>
+</div>
+
+<script>
+    // --- YOUR DATA ---
+    const easy_words = ["bat","dog","toy","cat","rat","law","mud","boy","the","she","red","pop","lie","bay","hay","can","sad","mad","cap","rap","met","fad","hop","top","tap","lap","lie","bag","ham","ray","say","tie","bit","hit","hat","bet","bid","lid","pad","and","tan","tar","eat","ate","lag","rag","tag","kid","dip","rip","lip","pod","rod","nod","his","sis","gem","ant","wad","win","nap","way","pay","day","van","mom","dad","dot","rot","tip","hen","tin","fee","tee","tea","pea","bee","sea","see","men","man","did","sim","pin","fib","yay","may","pot","pan","run","ran","ton","put","hut","but","cut","pit","vat"];
+    const medium_words = ["lemon","cheese","happy","angry","tomato","carve","tattoo","water","walks","visit","liver","flight","height","skirts","house","train","spoon","tiger","zebra","doctor","teach","study","juice","bottle","never","peace","donor","python","coding","uncle","sleeps","table","wonder","growth","forest","river","yellow","purple","cycle","pillow","school","queen","yogurt","bouncy","flavor","guitar","piano","breeze","sunny","window","marvel","gloves","framed","sweet","dirty","clean","apple","coffee","button","refer","climb","minute","light","shelf","wobble","tired","party","brain","vault","tennis","winter","cover","paper","pencil","hello"];
+    const hard_words = ["congratulations","absolutely","photosynthesis","monstrosity","university","cheeseburger","accommodate","suburban","pizazz","assuming","stewardess","xylophone","overzealous","withdrawal","wednesday","vulnerable","visualization","versatile","veterinary","vaccination","vegetarian","unanimous","transmission","trajectory","temporary","tournament","temperature","surveillance","psychology","responsibility","recommendation","pronunciation","practicioner","plagiarism","pilgrimage","philosophy","participation","nutritious","necessarily","miscellaneous","marshmallows","mayonnaise","leprechaun","limousine","kindergarten","knowledgeable","interference","inflammation","handkerchief","fluorescent","extraordinary","pharmaceutical","exhiliration","environmental","disappointment","choreography","circumstantial","cauliflower","cantaloupe","auditorium","apostrophe","amphitheater","advantageous","acknowledgement","abbreviation","abundant","accommodation","adjustment","ambidextrous","asymmetrical","auxiliary","bachelorette","bureaucracy","behavioral","boulevard","camouflage","determination","differentiation","description","dysfunctional","impressionable","enthusiastic","entrepreneur","eavesdropping","exaggerated","fascinating","governmental","hygienic","immediately","individuality","interpretation","laboratory","labyrinth","lieutenant","lightning","legitimate","likelihood","maintenance","masquerade","medicinal","mezzanine","medieval","mischievious","misunderstood","pneumonia","noticeable","opportunity","overwhelming","picturesque","pilgrimage","prohibitive","quadruple","ridiculous","sacrilegious","rudimentary","chandelier","sophomore","superfluous","susceptible","suspicious","synonymous","tomorrow","zucchini"];
+
+    // --- YOUR LEVEL LOGIC ---
+    const levels = [
+        { count: 1, type: "easy", time: 3 },
+        { count: 1, type: "medium", time: 2 },
+        { count: 2, type: "easy", time: 2 },
+        { count: 1, type: "hard", time: 2 },
+        { count: 3, type: "easy", time: 3 },
+        { count: 2, type: "medium", time: 3 },
+        { count: 4, type: "easy", time: 3 },
+        { count: 3, type: "medium", time: 4 },
+        { count: 2, type: "hard", time: 4 },
+        { count: 4, type: "medium", time: 5 },
+        { count: 3, type: "hard", time: 5 },
+        { count: 4, type: "hard", time: 6 },
+        { count: 8, type: "easy", time: 3 },
+        { count: 5, type: "hard", time: 6 }
+    ];
+
+    let currentLevel = 0;
+    let targetText = "";
+    let timeLeft = 0;
+    let timerObj;
+
+    const wordDisplay = document.getElementById("word-display");
+    const userInput = document.getElementById("user-input");
+    const timerDisplay = document.getElementById("timer");
+    const levelInfo = document.getElementById("level-info");
+    const message = document.getElementById("message");
+    const actionBtn = document.getElementById("action-btn");
+
+    function startGame() {
+        currentLevel = 0;
+        message.innerHTML = "";
+        actionBtn.style.display = "none";
+        userInput.disabled = false;
+        loadLevel();
+    }
+
+    function loadLevel() {
+        userInput.value = "";
+        userInput.focus();
+        let config = levels[currentLevel];
+        levelInfo.innerHTML = "Level " + (currentLevel + 1);
+        
+        // Pick words
+        targetText = generatePhrase(config.count, config.type);
+        wordDisplay.innerHTML = targetText;
+
+        // Set Timer
+        timeLeft = config.time;
+        timerDisplay.innerHTML = "Time Remaining: " + timeLeft + "s";
+        
+        clearInterval(timerObj);
+        timerObj = setInterval(countDown, 1000);
+    }
+
+    function generatePhrase(count, type) {
+        let list = (type === "hard") ? hard_words : (type === "medium") ? medium_words : easy_words;
+        let selected = [];
+        for(let i=0; i<count; i++) {
+            selected.push(list[Math.floor(Math.random() * list.length)]);
+        }
+        return selected.join(" ");
+    }
+
+    function countDown() {
+        timeLeft--;
+        timerDisplay.innerHTML = "Time Remaining: " + timeLeft + "s";
+        if (timeLeft <= 0) {
+            gameOver("Time's Up!");
+        }
+    }
+
+    userInput.addEventListener("keydown", function(e) {
+        if (e.key === "Enter") {
+            if (userInput.value.trim() === targetText) {
+                checkLevelUp();
+            } else {
+                gameOver("Wrong spelling!");
+            }
+        }
+    });
+
+    function checkLevelUp() {
+        clearInterval(timerObj);
+        currentLevel++;
+        if (currentLevel < levels.length) {
+            message.className = "success";
+            message.innerHTML = "Level Passed! Loading next...";
+            setTimeout(() => {
+                message.innerHTML = "";
+                loadLevel();
+            }, 800);
+        } else {
+            message.className = "success";
+            message.innerHTML = "🏆 YOU ARE THE ULTIMATE TYPIST!";
+            wordDisplay.innerHTML = "Game Complete!";
+            userInput.disabled = true;
+            actionBtn.style.display = "inline-block";
+            actionBtn.innerHTML = "Replay?";
+        }
+    }
+
+    function gameOver(reason) {
+        clearInterval(timerObj);
+        userInput.disabled = true;
+        message.className = "error";
+        message.innerHTML = "FAILURE! " + reason + " (Level " + (currentLevel + 1) + ")";
+        actionBtn.style.display = "inline-block";
+        actionBtn.innerHTML = "Try Again";
+    }
+</script>
+
+</body>
+</html>
