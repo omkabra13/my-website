@@ -25,25 +25,7 @@
       var x = 1;
       function rollDice(){
         x = Math.floor((Math.random() * 6) + 1);
-        if (x === 1){
-        diceImg.src = "NewDice1.png";
-        }
-        if (x === 2){
-        diceImg.src = "NewDice2.png";
-        }
-        if (x === 3){
-        diceImg.src = "NewDice3.png";
-        }
-        if (x === 4){
-        diceImg.src = "NewDice4.png";
-        }
-        if (x === 5){
-        diceImg.src = "NewDice5.png";
-        }
-        if (x === 6){
-        diceImg.src = "NewDice6.png";
-        }
-      }
+        diceImg.src = "NewDice"+x+".png"
       
         
     </script>
