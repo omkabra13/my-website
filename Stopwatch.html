@@ -1,48 +1,49 @@
 <!DOCTYPE html>
 <html>
-<body>
-
-  <h1>Stopwatch</h1>
-  <h2 id="time">0:00:00</h2>
-
-  <button onclick="start()">Start</button>
-  <button onclick="stop()">Stop</button>
-  <button onclick="reset()">Reset</button>
+  <body>
+    <div style="text-align: center;">
+      <p style = "font-size: 100px;">Stopwatch</p>
+      <p id = "time" style = "font-size: 60px;">0:00:00</p>
+    
+      <button onclick="start()" style = "width: 150px; height: 80px; font-size: 30px; background-color: Green; color: Black; border-radius: 15px;">Start</button>
+      <button onclick="stop()" style = "width: 150px; height: 80px; font-size: 30px; background-color: Green; color: Black; border-radius: 15px;">Stop</button>
+      <button onclick="reset()" style = "width: 150px; height: 80px; font-size: 30px; background-color: Green; color: Black; border-radius: 15px;">Reset</button>
+    </div>
+    
+  <script>
+      var totalSeconds = 0; // Keep a "Grand Total"
+      var timer; 
   
-<script>
-    var totalSeconds = 0; // Keep a "Grand Total"
-    var timer; 
-
-    function start() {
-      if (!timer) {
-        timer = setInterval(function() {
-          totalSeconds++; // Only change the grand total
-          
-          // Calculate display numbers without breaking the total
-          var hours = Math.trunc(totalSeconds / 3600);
-          var minutes = Math.trunc((totalSeconds % 3600) / 60);
-          var seconds = totalSeconds % 60;
-
-          // Your "leading zero" logic works great!
-          var displaySec = seconds < 10 ? "0" + seconds : seconds;
-          var displayMins = minutes < 10 ? "0" + minutes : minutes;
-          
-          document.getElementById("time").innerHTML = hours + ":" + displayMins + ":" + displaySec;
-        }, 1000);
+      function start() {
+        if (!timer) {
+          timer = setInterval(function() {
+            totalSeconds++; // Only change the grand total
+            
+            // Calculate display numbers without breaking the total
+            var hours = Math.trunc(totalSeconds / 3600);
+            var minutes = Math.trunc((totalSeconds % 3600) / 60);
+            var seconds = totalSeconds % 60;
+  
+            // Your "leading zero" logic works great!
+            var displaySec = seconds < 10 ? "0" + seconds : seconds;
+            var displayMins = minutes < 10 ? "0" + minutes : minutes;
+            
+            document.getElementById("time").innerHTML = hours + ":" + displayMins + ":" + displaySec;
+          }, 1000);
+        }
       }
-    }
-
-    function stop() {
-      clearInterval(timer);
-      timer = null;
-    }
-
-    function reset() {
-      stop();
-      totalSeconds = 0; // Reset the grand total
-      document.getElementById("time").innerHTML = "0:00:00";
-    }
-  </script>
-
-</body>
+  
+      function stop() {
+        clearInterval(timer);
+        timer = null;
+      }
+  
+      function reset() {
+        stop();
+        totalSeconds = 0; // Reset the grand total
+        document.getElementById("time").innerHTML = "0:00:00";
+      }
+    </script>
+  
+  </body>
 </html>
