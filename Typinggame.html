@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Ultimate Typing Game v2.2</title>
+    <title>Ultimate Typing Game v2.3</title>
     <style>
         body {
             text-align: center;
@@ -49,9 +49,15 @@
             margin-bottom: 10px;
         }
         input:focus { border-color: #e94560; }
+        .btn-group {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
         button {
-            font-size: 20px;
-            padding: 15px 40px;
+            font-size: 18px;
+            padding: 12px 30px;
             background-color: #e94560;
             color: white;
             border: none;
@@ -60,6 +66,9 @@
             transition: 0.3s;
         }
         button:hover { background-color: #ff2e63; transform: scale(1.05); }
+        .retry-btn { background-color: #4ecca3; }
+        .retry-btn:hover { background-color: #45b391; }
+        
         #message {
             margin-top: 20px;
             font-size: 18px;
@@ -87,7 +96,12 @@
     
     <input type="text" id="user-input" placeholder="Type here..." autocomplete="off" disabled>
     <br>
-    <button id="action-btn" onclick="startGame()">Start Game</button>
+    
+    <div class="btn-group">
+        <button id="start-btn" onclick="startGame()">Start Game</button>
+        <button id="retry-btn" class="retry-btn" onclick="retryLevel()" style="display:none;">Try Level Again</button>
+        <button id="restart-btn" onclick="startGame()" style="display:none;">Complete Restart</button>
+    </div>
     
     <div id="message"></div>
     
@@ -102,26 +116,26 @@
     const hard_words = ["congratulations","absolutely","photosynthesis","monstrosity","university","cheeseburger","accommodate","suburban","pizazz","assuming","stewardess","xylophone","overzealous","withdrawal","wednesday","vulnerable","visualization","versatile","veterinary","vaccination","vegetarian","unanimous","transmission","trajectory","temporary","tournament","temperature","surveillance","psychology","responsibility","recommendation","pronunciation","practicioner","plagiarism","pilgrimage","philosophy","participation","nutritious","necessarily","miscellaneous","marshmallows","mayonnaise","leprechaun","limousine","kindergarten","knowledgeable","interference","inflammation","handkerchief","fluorescent","extraordinary","pharmaceutical","exhiliration","environmental","disappointment","choreography","circumstantial","cauliflower","cantaloupe","auditorium","apostrophe","amphitheater","advantageous","acknowledgement","abbreviation","abundant","accommodation","adjustment","ambidextrous","asymmetrical","auxiliary","bachelorette","bureaucracy","behavioral","boulevard","camouflage","determination","differentiation","description","dysfunctional","impressionable","enthusiastic","entrepreneur","eavesdropping","exaggerated","fascinating","governmental","hygienic","immediately","individuality","interpretation","laboratory","labyrinth","lieutenant","lightning","legitimate","likelihood","maintenance","masquerade","medicinal","mezzanine","medieval","mischievious","misunderstood","pneumonia","noticeable","opportunity","overwhelming","picturesque","pilgrimage","prohibitive","quadruple","ridiculous","sacrilegious","rudimentary","chandelier","sophomore","superfluous","susceptible","suspicious","synonymous","tomorrow","zucchini"];
 
     const levels = [
-        { count: 1, type: "easy",   time: 10 }, // L1:  ~0.4 CPS
-        { count: 2, type: "easy",   time: 10 }, // L2:  ~0.8 CPS
-        { count: 1, type: "medium", time: 10 }, // L3:  ~1.0 CPS
-        { count: 4, type: "easy",   time: 10 }, // L4:  ~1.2 CPS
-        { count: 3, type: "medium", time: 10 }, // L5:  1.5 CPS (Target)
-        { count: 6, type: "easy",   time: 10 }, // L6:  ~1.8 CPS
-        { count: 4, type: "medium", time: 10 }, // L7:  ~2.2 CPS
-        { count: 8, type: "easy",   time: 10 }, // L8:  ~2.8 CPS
-        { count: 6, type: "medium", time: 10 }, // L9:  ~3.2 CPS
-        { count: 3, type: "hard",   time: 10 }, // L10: 3.5 CPS (Target)
-        { count: 8, type: "medium", time: 10 }, // L11: ~4.2 CPS
-        { count: 4, type: "hard",   time: 10 }, // L12: ~4.8 CPS
-        { count: 12, type: "medium",time: 10 }, // L13: ~5.5 CPS
-        { count: 5, type: "hard",   time: 10 }, // L14: 6.0 CPS (Target)
-        { count: 16, type: "medium",time: 10 }, // L15: ~7.0 CPS
-        { count: 6, type: "hard",   time: 10 }, // L16: 7.5 CPS (Target)
-        { count: 20, type: "easy",  time: 10 }, // L17: ~8.5 CPS
-        { count: 8, type: "hard",   time: 10 }, // L18: 9.5 CPS (Target)
-        { count: 9, type: "hard",   time: 10 }, // L19: 10.5 CPS (Target)
-        { count: 11, type: "hard",  time: 10 }  // L20: 12.0+ CPS (Final Target)
+        { count: 1, type: "easy",   time: 10 }, 
+        { count: 2, type: "easy",   time: 10 }, 
+        { count: 1, type: "medium", time: 10 }, 
+        { count: 4, type: "easy",   time: 10 }, 
+        { count: 3, type: "medium", time: 10 }, // L5: 1.5 CPS
+        { count: 6, type: "easy",   time: 10 }, 
+        { count: 4, type: "medium", time: 10 }, 
+        { count: 8, type: "easy",   time: 10 }, 
+        { count: 6, type: "medium", time: 10 }, 
+        { count: 3, type: "hard",   time: 10 }, // L10: 3.5 CPS
+        { count: 8, type: "medium", time: 10 }, 
+        { count: 4, type: "hard",   time: 10 }, 
+        { count: 12, type: "medium",time: 10 }, 
+        { count: 5, type: "hard",   time: 10 }, // L14: 6.0 CPS
+        { count: 16, type: "medium",time: 10 }, 
+        { count: 6, type: "hard",   time: 10 }, // L16: 7.5 CPS
+        { count: 20, type: "easy",  time: 10 }, 
+        { count: 8, type: "hard",   time: 10 }, // L18: 9.5 CPS
+        { count: 9, type: "hard",   time: 10 }, // L19: 10.5 CPS
+        { count: 11, type: "hard",  time: 10 }  // L20: 12.0+ CPS
     ];
 
     let currentLevel = 0;
@@ -136,7 +150,10 @@
     const timerDisplay = document.getElementById("timer");
     const levelInfo = document.getElementById("level-info");
     const message = document.getElementById("message");
-    const actionBtn = document.getElementById("action-btn");
+    
+    const startBtn = document.getElementById("start-btn");
+    const retryBtn = document.getElementById("retry-btn");
+    const restartBtn = document.getElementById("restart-btn");
     const statsPanel = document.getElementById("stats-panel");
 
     function startGame() {
@@ -145,7 +162,19 @@
         totalTimeTaken = 0;
         message.innerHTML = "";
         statsPanel.style.display = "none";
-        actionBtn.style.display = "none";
+        
+        startBtn.style.display = "none";
+        retryBtn.style.display = "none";
+        restartBtn.style.display = "none";
+        
+        userInput.disabled = false;
+        loadLevel();
+    }
+
+    function retryLevel() {
+        message.innerHTML = "";
+        retryBtn.style.display = "none";
+        restartBtn.style.display = "none";
         userInput.disabled = false;
         loadLevel();
     }
@@ -203,6 +232,8 @@
         message.innerHTML = "🏆 GODLIKE SPEED!";
         wordDisplay.innerHTML = "Run Complete";
         showStats();
+        restartBtn.style.display = "inline-block";
+        restartBtn.innerHTML = "Play Again";
     }
 
     function gameOver(reason) {
@@ -211,8 +242,9 @@
         message.className = "error";
         message.innerHTML = reason + " (Failed Level " + (currentLevel + 1) + ")";
         showStats();
-        actionBtn.style.display = "inline-block";
-        actionBtn.innerHTML = "Try Again";
+        
+        retryBtn.style.display = "inline-block";
+        restartBtn.style.display = "inline-block";
     }
 
     function showStats() {
@@ -222,8 +254,6 @@
         const wpm = ((totalChars / 5) / (totalTimeTaken / 60)).toFixed(1);
         document.getElementById("stat-cps").innerHTML = "Average CPS: " + cps;
         document.getElementById("stat-wpm").innerHTML = "Average WPM: " + wpm;
-        userInput.disabled = true;
-        actionBtn.style.display = "inline-block";
     }
 </script>
 
