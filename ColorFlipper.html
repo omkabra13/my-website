@@ -23,9 +23,24 @@
       <button id = "random" onclick = turnRandom() style = "width: 250px; height: 100px; font-size: 40px; background-color: White; color: Black; border-radius: 20px;">
         RANDOM
       </button>
-      
-      
-     
     </div>
   </body>
+  <script>
+    function turnRed(){
+      document.body.style.backgroundColor = red;
+    }
+    function turnBlue(){
+      document.body.style.backgroundColor = blue;
+    }
+    function turnGreen(){
+      document.body.style.backgroundColor = green;
+    }
+    function turnRandom(){
+      var r = Math.floor(Math.random() * 256);
+      var g = Math.floor(Math.random() * 256);
+      var b = Math.floor(Math.random() * 256);
+      var color =  "rgb(" + r + "," + g + "," + b + ")";
+      document.body.style.backgroundColor = color;
+    }
+  </script>
 </html>
