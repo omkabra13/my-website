@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Ultimate Typing Game v2.3</title>
+    <title>Ultimate Typing Game v2.4</title>
     <style>
         body {
             text-align: center;
@@ -22,7 +22,7 @@
         }
         #word-display {
             font-size: 28px;
-            margin: 30px 0;
+            margin: 20px 0;
             min-height: 100px;
             color: #e94560;
             word-wrap: break-word;
@@ -31,11 +31,25 @@
             padding: 20px;
             border-radius: 10px;
         }
+        .hud {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-bottom: 10px;
+        }
         #timer {
             font-size: 35px;
             color: #00d2ff;
             font-weight: bold;
             text-shadow: 0 0 10px #00d2ff;
+        }
+        #live-cps {
+            font-size: 20px;
+            color: #4ecca3;
+            background: rgba(78, 204, 163, 0.1);
+            padding: 5px 15px;
+            border-radius: 20px;
+            border: 1px solid #4ecca3;
         }
         input {
             font-size: 22px;
@@ -67,13 +81,8 @@
         }
         button:hover { background-color: #ff2e63; transform: scale(1.05); }
         .retry-btn { background-color: #4ecca3; }
-        .retry-btn:hover { background-color: #45b391; }
         
-        #message {
-            margin-top: 20px;
-            font-size: 18px;
-            min-height: 30px;
-        }
+        #message { margin-top: 20px; font-size: 18px; min-height: 30px; }
         .success { color: #4ecca3; }
         .error { color: #e94560; }
         #stats-panel {
@@ -90,7 +99,11 @@
 <div class="container">
     <h1>Ultimate Typing Game</h1>
     <h3 id="level-info">Level 1 / 20</h3>
-    <div id="timer">10s</div>
+    
+    <div class="hud">
+        <div id="timer">10s</div>
+        <div id="live-cps">CPS: 0.00</div>
+    </div>
     
     <div id="word-display">Press Start to Begin</div>
     
@@ -100,162 +113,4 @@
     <div class="btn-group">
         <button id="start-btn" onclick="startGame()">Start Game</button>
         <button id="retry-btn" class="retry-btn" onclick="retryLevel()" style="display:none;">Try Level Again</button>
-        <button id="restart-btn" onclick="startGame()" style="display:none;">Complete Restart</button>
-    </div>
-    
-    <div id="message"></div>
-    
-    <div id="stats-panel">
-        <span id="stat-cps"></span> | <span id="stat-wpm"></span>
-    </div>
-</div>
-
-<script>
-    const easy_words = ["bat","dog","toy","cat","rat","law","mud","boy","the","she","red","pop","lie","bay","hay","can","sad","mad","cap","rap","met","fad","hop","top","tap","lap","lie","bag","ham","ray","say","tie","bit","hit","hat","bet","bid","lid","pad","and","tan","tar","eat","ate","lag","rag","tag","kid","dip","rip","lip","pod","rod","nod","his","sis","gem","ant","wad","win","nap","way","pay","day","van","mom","dad","dot","rot","tip","hen","tin","fee","tee","tea","pea","bee","sea","see","men","man","did","sim","pin","fib","yay","may","pot","pan","run","ran","ton","put","hut","but","cut","pit","vat"];
-    const medium_words = ["lemon","cheese","happy","angry","tomato","carve","tattoo","water","walks","visit","liver","flight","height","skirts","house","train","spoon","tiger","zebra","doctor","teach","study","juice","bottle","never","peace","donor","python","coding","uncle","sleeps","table","wonder","growth","forest","river","yellow","purple","cycle","pillow","school","queen","yogurt","bouncy","flavor","guitar","piano","breeze","sunny","window","marvel","gloves","framed","sweet","dirty","clean","apple","coffee","button","refer","climb","minute","light","shelf","wobble","tired","party","brain","vault","tennis","winter","cover","paper","pencil","hello"];
-    const hard_words = ["congratulations","absolutely","photosynthesis","monstrosity","university","cheeseburger","accommodate","suburban","pizazz","assuming","stewardess","xylophone","overzealous","withdrawal","wednesday","vulnerable","visualization","versatile","veterinary","vaccination","vegetarian","unanimous","transmission","trajectory","temporary","tournament","temperature","surveillance","psychology","responsibility","recommendation","pronunciation","practicioner","plagiarism","pilgrimage","philosophy","participation","nutritious","necessarily","miscellaneous","marshmallows","mayonnaise","leprechaun","limousine","kindergarten","knowledgeable","interference","inflammation","handkerchief","fluorescent","extraordinary","pharmaceutical","exhiliration","environmental","disappointment","choreography","circumstantial","cauliflower","cantaloupe","auditorium","apostrophe","amphitheater","advantageous","acknowledgement","abbreviation","abundant","accommodation","adjustment","ambidextrous","asymmetrical","auxiliary","bachelorette","bureaucracy","behavioral","boulevard","camouflage","determination","differentiation","description","dysfunctional","impressionable","enthusiastic","entrepreneur","eavesdropping","exaggerated","fascinating","governmental","hygienic","immediately","individuality","interpretation","laboratory","labyrinth","lieutenant","lightning","legitimate","likelihood","maintenance","masquerade","medicinal","mezzanine","medieval","mischievious","misunderstood","pneumonia","noticeable","opportunity","overwhelming","picturesque","pilgrimage","prohibitive","quadruple","ridiculous","sacrilegious","rudimentary","chandelier","sophomore","superfluous","susceptible","suspicious","synonymous","tomorrow","zucchini"];
-
-    const levels = [
-        { count: 1, type: "easy",   time: 10 }, 
-        { count: 2, type: "easy",   time: 10 }, 
-        { count: 1, type: "medium", time: 10 }, 
-        { count: 4, type: "easy",   time: 10 }, 
-        { count: 3, type: "medium", time: 10 }, // L5: 1.5 CPS
-        { count: 6, type: "easy",   time: 10 }, 
-        { count: 4, type: "medium", time: 10 }, 
-        { count: 8, type: "easy",   time: 10 }, 
-        { count: 6, type: "medium", time: 10 }, 
-        { count: 3, type: "hard",   time: 10 }, // L10: 3.5 CPS
-        { count: 8, type: "medium", time: 10 }, 
-        { count: 4, type: "hard",   time: 10 }, 
-        { count: 12, type: "medium",time: 10 }, 
-        { count: 5, type: "hard",   time: 10 }, // L14: 6.0 CPS
-        { count: 16, type: "medium",time: 10 }, 
-        { count: 6, type: "hard",   time: 10 }, // L16: 7.5 CPS
-        { count: 20, type: "easy",  time: 10 }, 
-        { count: 8, type: "hard",   time: 10 }, // L18: 9.5 CPS
-        { count: 9, type: "hard",   time: 10 }, // L19: 10.5 CPS
-        { count: 11, type: "hard",  time: 10 }  // L20: 12.0+ CPS
-    ];
-
-    let currentLevel = 0;
-    let targetText = "";
-    let timeLeft = 10;
-    let timerObj;
-    let totalChars = 0;
-    let totalTimeTaken = 0;
-
-    const wordDisplay = document.getElementById("word-display");
-    const userInput = document.getElementById("user-input");
-    const timerDisplay = document.getElementById("timer");
-    const levelInfo = document.getElementById("level-info");
-    const message = document.getElementById("message");
-    
-    const startBtn = document.getElementById("start-btn");
-    const retryBtn = document.getElementById("retry-btn");
-    const restartBtn = document.getElementById("restart-btn");
-    const statsPanel = document.getElementById("stats-panel");
-
-    function startGame() {
-        currentLevel = 0;
-        totalChars = 0;
-        totalTimeTaken = 0;
-        message.innerHTML = "";
-        statsPanel.style.display = "none";
-        
-        startBtn.style.display = "none";
-        retryBtn.style.display = "none";
-        restartBtn.style.display = "none";
-        
-        userInput.disabled = false;
-        loadLevel();
-    }
-
-    function retryLevel() {
-        message.innerHTML = "";
-        retryBtn.style.display = "none";
-        restartBtn.style.display = "none";
-        userInput.disabled = false;
-        loadLevel();
-    }
-
-    function loadLevel() {
-        userInput.value = "";
-        userInput.focus();
-        let config = levels[currentLevel];
-        levelInfo.innerHTML = "Level " + (currentLevel + 1) + " / 20";
-        targetText = generatePhrase(config.count, config.type);
-        wordDisplay.innerHTML = targetText;
-        timeLeft = config.time;
-        timerDisplay.innerHTML = timeLeft + "s";
-        clearInterval(timerObj);
-        timerObj = setInterval(countDown, 1000);
-    }
-
-    function generatePhrase(count, type) {
-        let list = (type === "hard") ? hard_words : (type === "medium") ? medium_words : easy_words;
-        let selected = [];
-        for(let i=0; i<count; i++) {
-            selected.push(list[Math.floor(Math.random() * list.length)]);
-        }
-        return selected.join(" ");
-    }
-
-    function countDown() {
-        timeLeft--;
-        timerDisplay.innerHTML = timeLeft + "s";
-        if (timeLeft <= 0) { gameOver("TIME OUT!"); }
-    }
-
-    userInput.addEventListener("keydown", function(e) {
-        if (e.key === "Enter") {
-            if (userInput.value.trim() === targetText) {
-                totalChars += targetText.length;
-                totalTimeTaken += (levels[currentLevel].time - timeLeft);
-                checkLevelUp();
-            } else { gameOver("TYPO!"); }
-        }
-    });
-
-    function checkLevelUp() {
-        clearInterval(timerObj);
-        currentLevel++;
-        if (currentLevel < levels.length) {
-            message.className = "success";
-            message.innerHTML = "Lvl " + currentLevel + " Done!";
-            setTimeout(() => { message.innerHTML = ""; loadLevel(); }, 700);
-        } else { finishGame(); }
-    }
-
-    function finishGame() {
-        message.className = "success";
-        message.innerHTML = "🏆 GODLIKE SPEED!";
-        wordDisplay.innerHTML = "Run Complete";
-        showStats();
-        restartBtn.style.display = "inline-block";
-        restartBtn.innerHTML = "Play Again";
-    }
-
-    function gameOver(reason) {
-        clearInterval(timerObj);
-        userInput.disabled = true;
-        message.className = "error";
-        message.innerHTML = reason + " (Failed Level " + (currentLevel + 1) + ")";
-        showStats();
-        
-        retryBtn.style.display = "inline-block";
-        restartBtn.style.display = "inline-block";
-    }
-
-    function showStats() {
-        if (totalTimeTaken === 0) return;
-        statsPanel.style.display = "block";
-        const cps = (totalChars / totalTimeTaken).toFixed(2);
-        const wpm = ((totalChars / 5) / (totalTimeTaken / 60)).toFixed(1);
-        document.getElementById("stat-cps").innerHTML = "Average CPS: " + cps;
-        document.getElementById("stat-wpm").innerHTML = "Average WPM: " + wpm;
-    }
-</script>
-
-</body>
-</html>
+        <button id="restart-btn
