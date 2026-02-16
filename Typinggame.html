@@ -12,7 +12,7 @@
             padding-top: 50px;
         }
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
             background: #34495e;
             padding: 30px;
@@ -20,24 +20,26 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
         #word-display {
-            font-size: 35px;
+            font-size: 32px;
             margin: 30px 0;
-            min-height: 50px;
+            min-height: 80px;
             color: #f1c40f;
             word-wrap: break-word;
+            line-height: 1.4;
         }
         #timer {
-            font-size: 24px;
+            font-size: 28px;
             color: #e74c3c;
             font-weight: bold;
         }
         input {
             font-size: 22px;
             padding: 12px;
-            width: 80%;
+            width: 85%;
             border-radius: 8px;
             border: none;
             outline: none;
+            margin-bottom: 10px;
         }
         button {
             font-size: 20px;
@@ -47,7 +49,6 @@
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            margin-top: 20px;
         }
         button:hover { background-color: #2ecc71; }
         #message {
@@ -63,12 +64,12 @@
 
 <div class="container">
     <h1>Ultimate Typing Game</h1>
-    <h3 id="level-info">Level 1</h3>
-    <div id="timer">Time Remaining: 0s</div>
+    <h3 id="level-info">Level 1 / 20</h3>
+    <div id="timer">10s</div>
     
     <div id="word-display">Press Start to Begin</div>
     
-    <input type="text" id="user-input" placeholder="Type here and press Enter..." autocomplete="off" disabled>
+    <input type="text" id="user-input" placeholder="Type here..." autocomplete="off" disabled>
     <br>
     <button id="action-btn" onclick="startGame()">Start Game</button>
     
@@ -76,32 +77,37 @@
 </div>
 
 <script>
-    // --- YOUR DATA ---
     const easy_words = ["bat","dog","toy","cat","rat","law","mud","boy","the","she","red","pop","lie","bay","hay","can","sad","mad","cap","rap","met","fad","hop","top","tap","lap","lie","bag","ham","ray","say","tie","bit","hit","hat","bet","bid","lid","pad","and","tan","tar","eat","ate","lag","rag","tag","kid","dip","rip","lip","pod","rod","nod","his","sis","gem","ant","wad","win","nap","way","pay","day","van","mom","dad","dot","rot","tip","hen","tin","fee","tee","tea","pea","bee","sea","see","men","man","did","sim","pin","fib","yay","may","pot","pan","run","ran","ton","put","hut","but","cut","pit","vat"];
     const medium_words = ["lemon","cheese","happy","angry","tomato","carve","tattoo","water","walks","visit","liver","flight","height","skirts","house","train","spoon","tiger","zebra","doctor","teach","study","juice","bottle","never","peace","donor","python","coding","uncle","sleeps","table","wonder","growth","forest","river","yellow","purple","cycle","pillow","school","queen","yogurt","bouncy","flavor","guitar","piano","breeze","sunny","window","marvel","gloves","framed","sweet","dirty","clean","apple","coffee","button","refer","climb","minute","light","shelf","wobble","tired","party","brain","vault","tennis","winter","cover","paper","pencil","hello"];
     const hard_words = ["congratulations","absolutely","photosynthesis","monstrosity","university","cheeseburger","accommodate","suburban","pizazz","assuming","stewardess","xylophone","overzealous","withdrawal","wednesday","vulnerable","visualization","versatile","veterinary","vaccination","vegetarian","unanimous","transmission","trajectory","temporary","tournament","temperature","surveillance","psychology","responsibility","recommendation","pronunciation","practicioner","plagiarism","pilgrimage","philosophy","participation","nutritious","necessarily","miscellaneous","marshmallows","mayonnaise","leprechaun","limousine","kindergarten","knowledgeable","interference","inflammation","handkerchief","fluorescent","extraordinary","pharmaceutical","exhiliration","environmental","disappointment","choreography","circumstantial","cauliflower","cantaloupe","auditorium","apostrophe","amphitheater","advantageous","acknowledgement","abbreviation","abundant","accommodation","adjustment","ambidextrous","asymmetrical","auxiliary","bachelorette","bureaucracy","behavioral","boulevard","camouflage","determination","differentiation","description","dysfunctional","impressionable","enthusiastic","entrepreneur","eavesdropping","exaggerated","fascinating","governmental","hygienic","immediately","individuality","interpretation","laboratory","labyrinth","lieutenant","lightning","legitimate","likelihood","maintenance","masquerade","medicinal","mezzanine","medieval","mischievious","misunderstood","pneumonia","noticeable","opportunity","overwhelming","picturesque","pilgrimage","prohibitive","quadruple","ridiculous","sacrilegious","rudimentary","chandelier","sophomore","superfluous","susceptible","suspicious","synonymous","tomorrow","zucchini"];
 
-    // --- YOUR LEVEL LOGIC ---
+    // --- YOUR NEW 20 LEVEL CONFIG ---
     const levels = [
-        { count: 1, type: "easy", time: 3 },
-        { count: 1, type: "medium", time: 2 },
-        { count: 2, type: "easy", time: 2 },
-        { count: 1, type: "hard", time: 2 },
-        { count: 3, type: "easy", time: 3 },
-        { count: 2, type: "medium", time: 3 },
-        { count: 4, type: "easy", time: 3 },
-        { count: 3, type: "medium", time: 4 },
-        { count: 2, type: "hard", time: 4 },
-        { count: 4, type: "medium", time: 5 },
-        { count: 3, type: "hard", time: 5 },
-        { count: 4, type: "hard", time: 6 },
-        { count: 8, type: "easy", time: 3 },
-        { count: 5, type: "hard", time: 6 }
+        { count: 1, type: "easy", time: 10 },    // L1
+        { count: 1, type: "medium", time: 10 },  // L2
+        { count: 2, type: "easy", time: 10 },    // L3
+        { count: 1, type: "hard", time: 10 },    // L4
+        { count: 3, type: "easy", time: 10 },    // L5
+        { count: 2, type: "medium", time: 10 },  // L6
+        { count: 4, type: "easy", time: 10 },    // L7
+        { count: 3, type: "medium", time: 10 },  // L8
+        { count: 2, type: "hard", time: 10 },    // L9
+        { count: 6, type: "easy", time: 10 },    // L10
+        { count: 5, type: "medium", time: 10 },  // L11
+        { count: 3, type: "hard", time: 10 },    // L12
+        { count: 10, type: "easy", time: 10 },   // L13
+        { count: 4, type: "hard", time: 10 },    // L14
+        { count: 7, type: "medium", time: 10 },  // L15
+        { count: 6, type: "hard", time: 10 },    // L16
+        { count: 16, type: "easy", time: 10 },   // L17
+        { count: 10, type: "medium", time: 10 }, // L18
+        { count: 8, type: "hard", time: 10 },    // L19
+        { count: 10, type: "hard", time: 10 }    // L20
     ];
 
     let currentLevel = 0;
     let targetText = "";
-    let timeLeft = 0;
+    let timeLeft = 10;
     let timerObj;
 
     const wordDisplay = document.getElementById("word-display");
@@ -123,15 +129,13 @@
         userInput.value = "";
         userInput.focus();
         let config = levels[currentLevel];
-        levelInfo.innerHTML = "Level " + (currentLevel + 1);
+        levelInfo.innerHTML = "Level " + (currentLevel + 1) + " / 20";
         
-        // Pick words
         targetText = generatePhrase(config.count, config.type);
         wordDisplay.innerHTML = targetText;
 
-        // Set Timer
         timeLeft = config.time;
-        timerDisplay.innerHTML = "Time Remaining: " + timeLeft + "s";
+        timerDisplay.innerHTML = timeLeft + "s";
         
         clearInterval(timerObj);
         timerObj = setInterval(countDown, 1000);
@@ -148,9 +152,9 @@
 
     function countDown() {
         timeLeft--;
-        timerDisplay.innerHTML = "Time Remaining: " + timeLeft + "s";
+        timerDisplay.innerHTML = timeLeft + "s";
         if (timeLeft <= 0) {
-            gameOver("Time's Up!");
+            gameOver("Time Ran Out!");
         }
     }
 
@@ -159,7 +163,7 @@
             if (userInput.value.trim() === targetText) {
                 checkLevelUp();
             } else {
-                gameOver("Wrong spelling!");
+                gameOver("Typo! Try again.");
             }
         }
     });
@@ -169,18 +173,18 @@
         currentLevel++;
         if (currentLevel < levels.length) {
             message.className = "success";
-            message.innerHTML = "Level Passed! Loading next...";
+            message.innerHTML = "Level Complete! Get ready...";
             setTimeout(() => {
                 message.innerHTML = "";
                 loadLevel();
-            }, 800);
+            }, 1000);
         } else {
             message.className = "success";
-            message.innerHTML = "🏆 YOU ARE THE ULTIMATE TYPIST!";
-            wordDisplay.innerHTML = "Game Complete!";
+            message.innerHTML = "🏆 MASTER TYPIST! You beat all 20 levels!";
+            wordDisplay.innerHTML = "GAME CLEAR";
             userInput.disabled = true;
             actionBtn.style.display = "inline-block";
-            actionBtn.innerHTML = "Replay?";
+            actionBtn.innerHTML = "Play Again";
         }
     }
 
@@ -188,7 +192,7 @@
         clearInterval(timerObj);
         userInput.disabled = true;
         message.className = "error";
-        message.innerHTML = "FAILURE! " + reason + " (Level " + (currentLevel + 1) + ")";
+        message.innerHTML = reason + " Failed at Level " + (currentLevel + 1);
         actionBtn.style.display = "inline-block";
         actionBtn.innerHTML = "Try Again";
     }
