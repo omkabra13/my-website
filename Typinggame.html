@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Ultimate Typing Game v2.4</title>
+    <title>Ultimate Typing Game v2.5</title>
     <style>
         body {
             text-align: center;
@@ -45,11 +45,12 @@
         }
         #live-cps {
             font-size: 20px;
-            color: #4ecca3;
-            background: rgba(78, 204, 163, 0.1);
+            color: #e94560; /* Starts Red */
+            background: rgba(255, 255, 255, 0.05);
             padding: 5px 15px;
             border-radius: 20px;
-            border: 1px solid #4ecca3;
+            border: 1px solid #e94560;
+            transition: 0.3s;
         }
         input {
             font-size: 22px;
@@ -102,7 +103,7 @@
     
     <div class="hud">
         <div id="timer">10s</div>
-        <div id="live-cps">CPS: 0.00</div>
+        <div id="live-cps">Target CPS: 0.00</div>
     </div>
     
     <div id="word-display">Press Start to Begin</div>
@@ -129,26 +130,26 @@
     const hard_words = ["congratulations","absolutely","photosynthesis","monstrosity","university","cheeseburger","accommodate","suburban","pizazz","assuming","stewardess","xylophone","overzealous","withdrawal","wednesday","vulnerable","visualization","versatile","veterinary","vaccination","vegetarian","unanimous","transmission","trajectory","temporary","tournament","temperature","surveillance","psychology","responsibility","recommendation","pronunciation","practicioner","plagiarism","pilgrimage","philosophy","participation","nutritious","necessarily","miscellaneous","marshmallows","mayonnaise","leprechaun","limousine","kindergarten","knowledgeable","interference","inflammation","handkerchief","fluorescent","extraordinary","pharmaceutical","exhiliration","environmental","disappointment","choreography","circumstantial","cauliflower","cantaloupe","auditorium","apostrophe","amphitheater","advantageous","acknowledgement","abbreviation","abundant","accommodation","adjustment","ambidextrous","asymmetrical","auxiliary","bachelorette","bureaucracy","behavioral","boulevard","camouflage","determination","differentiation","description","dysfunctional","impressionable","enthusiastic","entrepreneur","eavesdropping","exaggerated","fascinating","governmental","hygienic","immediately","individuality","interpretation","laboratory","labyrinth","lieutenant","lightning","legitimate","likelihood","maintenance","masquerade","medicinal","mezzanine","medieval","mischievious","misunderstood","pneumonia","noticeable","opportunity","overwhelming","picturesque","pilgrimage","prohibitive","quadruple","ridiculous","sacrilegious","rudimentary","chandelier","sophomore","superfluous","susceptible","suspicious","synonymous","tomorrow","zucchini"];
 
     const levels = [
-        { count: 1, type: "easy",   time: 10 }, 
-        { count: 2, type: "easy",   time: 10 }, 
-        { count: 1, type: "medium", time: 10 }, 
-        { count: 4, type: "easy",   time: 10 }, 
-        { count: 3, type: "medium", time: 10 }, // L5: 1.5 CPS
-        { count: 6, type: "easy",   time: 10 }, 
-        { count: 4, type: "medium", time: 10 }, 
-        { count: 8, type: "easy",   time: 10 }, 
-        { count: 6, type: "medium", time: 10 }, 
-        { count: 3, type: "hard",   time: 10 }, // L10: 3.5 CPS
-        { count: 8, type: "medium", time: 10 }, 
-        { count: 4, type: "hard",   time: 10 }, 
-        { count: 9, type: "medium", time: 10 }, // L13: Adjusted to 9 words
-        { count: 5, type: "hard",   time: 10 }, // L14: 6.0 CPS
-        { count: 16, type: "medium",time: 10 }, 
-        { count: 6, type: "hard",   time: 10 }, // L16: 7.5 CPS
-        { count: 20, type: "easy",  time: 10 }, 
-        { count: 8, type: "hard",   time: 10 }, // L18: 9.5 CPS
-        { count: 9, type: "hard",   time: 10 }, // L19: 10.5 CPS
-        { count: 11, type: "hard",  time: 10 }  // L20: 12.0+ CPS
+        { count: 1, type: "easy",   time: 10, targetCps: 0.4 }, 
+        { count: 2, type: "easy",   time: 10, targetCps: 0.8 }, 
+        { count: 1, type: "medium", time: 10, targetCps: 1.0 }, 
+        { count: 4, type: "easy",   time: 10, targetCps: 1.2 }, 
+        { count: 3, type: "medium", time: 10, targetCps: 1.5 }, // L5
+        { count: 6, type: "easy",   time: 10, targetCps: 1.8 }, 
+        { count: 4, type: "medium", time: 10, targetCps: 2.2 }, 
+        { count: 8, type: "easy",   time: 10, targetCps: 2.8 }, 
+        { count: 6, type: "medium", time: 10, targetCps: 3.2 }, 
+        { count: 3, type: "hard",   time: 10, targetCps: 3.5 }, // L10
+        { count: 8, type: "medium", time: 10, targetCps: 4.2 }, 
+        { count: 4, type: "hard",   time: 10, targetCps: 4.8 }, 
+        { count: 9, type: "medium", time: 10, targetCps: 5.5 }, // L13
+        { count: 5, type: "hard",   time: 10, targetCps: 6.0 }, // L14
+        { count: 10, type: "medium",time: 10, targetCps: 7.0 }, // L15: Balanced
+        { count: 6, type: "hard",   time: 10, targetCps: 7.5 }, // L16
+        { count: 20, type: "easy",  time: 10, targetCps: 8.5 }, 
+        { count: 8, type: "hard",   time: 10, targetCps: 9.5 }, // L18
+        { count: 9, type: "hard",   time: 10, targetCps: 10.5}, // L19
+        { count: 11, type: "hard",  time: 10, targetCps: 12.0}  // L20
     ];
 
     let currentLevel = 0;
@@ -193,6 +194,8 @@
         timeLeft = config.time;
         timerDisplay.innerHTML = timeLeft + "s";
         liveCpsDisplay.innerHTML = "CPS: 0.00";
+        liveCpsDisplay.style.color = "#e94560";
+        liveCpsDisplay.style.borderColor = "#e94560";
         clearInterval(timerObj);
         timerObj = setInterval(countDown, 1000);
     }
@@ -215,6 +218,15 @@
         if (elapsed > 0) {
             let currentCPS = (userInput.value.length / elapsed).toFixed(2);
             liveCpsDisplay.innerHTML = "CPS: " + currentCPS;
+            
+            // Color logic: Turn Green if hitting target CPS
+            if (currentCPS >= levels[currentLevel].targetCps) {
+                liveCpsDisplay.style.color = "#4ecca3";
+                liveCpsDisplay.style.borderColor = "#4ecca3";
+            } else {
+                liveCpsDisplay.style.color = "#e94560";
+                liveCpsDisplay.style.borderColor = "#e94560";
+            }
         }
     });
 
