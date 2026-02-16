@@ -21,8 +21,23 @@
       <p></p>
       <canvas id="gameCanvas" width="500" height="10000"></canvas>
     </div>
-    <div id="myText" style="position: absolute; left: 580px; top: 670px; font-family: Arial; font-size: 12px; color: black;">
-      Hello! I am at X:100, Y:50
+    <div id="Text1" style="position: absolute; left: 580px; top: 670px; font-family: Arial; font-size: 10px; color: black;">
+      0/0 = 0%
+    </div>
+    <div id="Text2" style="position: absolute; left: 660px; top: 670px; font-family: Arial; font-size: 10px; color: black;">
+      0/0 = 0%
+    </div>
+    <div id="Text3" style="position: absolute; left: 740px; top: 670px; font-family: Arial; font-size: 10px; color: black;">
+      0/0 = 0%
+    </div>
+    <div id="Text4" style="position: absolute; left: 820px; top: 670px; font-family: Arial; font-size: 10px; color: black;">
+      0/0 = 0%
+    </div>
+    <div id="Text5" style="position: absolute; left: 900px; top: 670px; font-family: Arial; font-size: 10px; color: black;">
+      0/0 = 0%
+    </div>
+    <div id="Text6" style="position: absolute; left: 980px; top: 670px; font-family: Arial; font-size: 10px; color: black;">
+      0/0 = 0%
     </div>
     <script>
       var diceImg = document.getElementById("dice");
@@ -44,6 +59,18 @@
           ctx.drawImage(img, 18+(x-1)*80, 30+80*frequency[x-1], 64, 64);
           
         };        
+        var label1 = document.getElementById("Text1");
+        label1.innerHTML = "frequency[0]+"/"+total+" = "+Math.floor(100*frequency[0]/total);
+        var label2 = document.getElementById("Text2");
+        label2.innerHTML = "frequency[1]+"/"+total+" = "+Math.floor(100*frequency[1]/total);
+        var label3 = document.getElementById("Text3");
+        label3.innerHTML = "frequency[2]+"/"+total+" = "+Math.floor(100*frequency[2]/total);
+        var label4 = document.getElementById("Text4");
+        label4.innerHTML = "frequency[3]+"/"+total+" = "+Math.floor(100*frequency[3]/total);
+        var label5 = document.getElementById("Text5");
+        label5.innerHTML = "frequency[4]+"/"+total+" = "+Math.floor(100*frequency[4]/total);
+        var label5 = document.getElementById("Text6");
+        label6.innerHTML = "frequency[5]+"/"+total+" = "+Math.floor(100*frequency[5]/total);
         
       }
     </script>
