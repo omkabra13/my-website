@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Ultimate Typing Game v2.0</title>
+    <title>Ultimate Typing Game v2.2</title>
     <style>
         body {
             text-align: center;
@@ -21,7 +21,7 @@
             border: 1px solid #0f3460;
         }
         #word-display {
-            font-size: 32px;
+            font-size: 28px;
             margin: 30px 0;
             min-height: 100px;
             color: #e94560;
@@ -85,7 +85,7 @@
     
     <div id="word-display">Press Start to Begin</div>
     
-    <input type="text" id="user-input" placeholder="Type here and press Enter..." autocomplete="off" disabled>
+    <input type="text" id="user-input" placeholder="Type here..." autocomplete="off" disabled>
     <br>
     <button id="action-btn" onclick="startGame()">Start Game</button>
     
@@ -101,28 +101,27 @@
     const medium_words = ["lemon","cheese","happy","angry","tomato","carve","tattoo","water","walks","visit","liver","flight","height","skirts","house","train","spoon","tiger","zebra","doctor","teach","study","juice","bottle","never","peace","donor","python","coding","uncle","sleeps","table","wonder","growth","forest","river","yellow","purple","cycle","pillow","school","queen","yogurt","bouncy","flavor","guitar","piano","breeze","sunny","window","marvel","gloves","framed","sweet","dirty","clean","apple","coffee","button","refer","climb","minute","light","shelf","wobble","tired","party","brain","vault","tennis","winter","cover","paper","pencil","hello"];
     const hard_words = ["congratulations","absolutely","photosynthesis","monstrosity","university","cheeseburger","accommodate","suburban","pizazz","assuming","stewardess","xylophone","overzealous","withdrawal","wednesday","vulnerable","visualization","versatile","veterinary","vaccination","vegetarian","unanimous","transmission","trajectory","temporary","tournament","temperature","surveillance","psychology","responsibility","recommendation","pronunciation","practicioner","plagiarism","pilgrimage","philosophy","participation","nutritious","necessarily","miscellaneous","marshmallows","mayonnaise","leprechaun","limousine","kindergarten","knowledgeable","interference","inflammation","handkerchief","fluorescent","extraordinary","pharmaceutical","exhiliration","environmental","disappointment","choreography","circumstantial","cauliflower","cantaloupe","auditorium","apostrophe","amphitheater","advantageous","acknowledgement","abbreviation","abundant","accommodation","adjustment","ambidextrous","asymmetrical","auxiliary","bachelorette","bureaucracy","behavioral","boulevard","camouflage","determination","differentiation","description","dysfunctional","impressionable","enthusiastic","entrepreneur","eavesdropping","exaggerated","fascinating","governmental","hygienic","immediately","individuality","interpretation","laboratory","labyrinth","lieutenant","lightning","legitimate","likelihood","maintenance","masquerade","medicinal","mezzanine","medieval","mischievious","misunderstood","pneumonia","noticeable","opportunity","overwhelming","picturesque","pilgrimage","prohibitive","quadruple","ridiculous","sacrilegious","rudimentary","chandelier","sophomore","superfluous","susceptible","suspicious","synonymous","tomorrow","zucchini"];
 
-    // Balanced CPS Progression with Mixed Varieties
     const levels = [
-        { count: 1, type: "easy",   time: 10 }, // L1: ~0.4 CPS
-        { count: 2, type: "easy",   time: 10 }, // L2: ~0.8 CPS
-        { count: 1, type: "medium", time: 10 }, // L3: ~1.2 CPS
-        { count: 3, type: "easy",   time: 10 }, // L4: ~1.6 CPS
-        { count: 2, type: "medium", time: 10 }, // L5: ~2.0 CPS
-        { count: 4, type: "easy",   time: 10 }, // L6: ~2.5 CPS
-        { count: 3, type: "medium", time: 10 }, // L7: ~3.2 CPS
-        { count: 2, type: "hard",   time: 10 }, // L8: ~4.0 CPS
-        { count: 4, type: "medium", time: 10 }, // L9: ~4.5 CPS
-        { count: 3, type: "hard",   time: 10 }, // L10: ~5.2 CPS
-        { count: 6, type: "medium", time: 10 }, // L11: ~5.8 CPS
-        { count: 4, type: "hard",   time: 10 }, // L12: ~6.5 CPS
-        { count: 12, type: "mixed", time: 10 }, // L13: ~7.0 CPS (Mixed Variety)
-        { count: 5, type: "hard",   time: 10 }, // L14: ~7.5 CPS
-        { count: 8, type: "mixed",  time: 10 }, // L15: ~8.2 CPS
-        { count: 6, type: "hard",   time: 10 }, // L16: ~9.0 CPS
-        { count: 16, type: "easy",  time: 10 }, // L17: ~10.0 CPS (Hyper Sprint)
-        { count: 10, type: "mixed", time: 10 }, // L18: ~11.0 CPS
-        { count: 8, type: "hard",   time: 10 }, // L19: ~11.5 CPS
-        { count: 10, type: "hard",  time: 10 }  // L20: ~13.0 CPS (Elite)
+        { count: 1, type: "easy",   time: 10 }, // L1:  ~0.4 CPS
+        { count: 2, type: "easy",   time: 10 }, // L2:  ~0.8 CPS
+        { count: 1, type: "medium", time: 10 }, // L3:  ~1.0 CPS
+        { count: 4, type: "easy",   time: 10 }, // L4:  ~1.2 CPS
+        { count: 3, type: "medium", time: 10 }, // L5:  1.5 CPS (Target)
+        { count: 6, type: "easy",   time: 10 }, // L6:  ~1.8 CPS
+        { count: 4, type: "medium", time: 10 }, // L7:  ~2.2 CPS
+        { count: 8, type: "easy",   time: 10 }, // L8:  ~2.8 CPS
+        { count: 6, type: "medium", time: 10 }, // L9:  ~3.2 CPS
+        { count: 3, type: "hard",   time: 10 }, // L10: 3.5 CPS (Target)
+        { count: 8, type: "medium", time: 10 }, // L11: ~4.2 CPS
+        { count: 4, type: "hard",   time: 10 }, // L12: ~4.8 CPS
+        { count: 12, type: "medium",time: 10 }, // L13: ~5.5 CPS
+        { count: 5, type: "hard",   time: 10 }, // L14: 6.0 CPS (Target)
+        { count: 16, type: "medium",time: 10 }, // L15: ~7.0 CPS
+        { count: 6, type: "hard",   time: 10 }, // L16: 7.5 CPS (Target)
+        { count: 20, type: "easy",  time: 10 }, // L17: ~8.5 CPS
+        { count: 8, type: "hard",   time: 10 }, // L18: 9.5 CPS (Target)
+        { count: 9, type: "hard",   time: 10 }, // L19: 10.5 CPS (Target)
+        { count: 11, type: "hard",  time: 10 }  // L20: 12.0+ CPS (Final Target)
     ];
 
     let currentLevel = 0;
@@ -156,28 +155,18 @@
         userInput.focus();
         let config = levels[currentLevel];
         levelInfo.innerHTML = "Level " + (currentLevel + 1) + " / 20";
-        
         targetText = generatePhrase(config.count, config.type);
         wordDisplay.innerHTML = targetText;
-
         timeLeft = config.time;
         timerDisplay.innerHTML = timeLeft + "s";
-        
         clearInterval(timerObj);
         timerObj = setInterval(countDown, 1000);
     }
 
     function generatePhrase(count, type) {
+        let list = (type === "hard") ? hard_words : (type === "medium") ? medium_words : easy_words;
         let selected = [];
         for(let i=0; i<count; i++) {
-            let list;
-            if (type === "mixed") {
-                // Pick a random list for variety
-                const r = Math.random();
-                list = (r < 0.3) ? easy_words : (r < 0.7) ? medium_words : hard_words;
-            } else {
-                list = (type === "hard") ? hard_words : (type === "medium") ? medium_words : easy_words;
-            }
             selected.push(list[Math.floor(Math.random() * list.length)]);
         }
         return selected.join(" ");
@@ -186,9 +175,7 @@
     function countDown() {
         timeLeft--;
         timerDisplay.innerHTML = timeLeft + "s";
-        if (timeLeft <= 0) {
-            gameOver("TIME'S UP!");
-        }
+        if (timeLeft <= 0) { gameOver("TIME OUT!"); }
     }
 
     userInput.addEventListener("keydown", function(e) {
@@ -197,9 +184,7 @@
                 totalChars += targetText.length;
                 totalTimeTaken += (levels[currentLevel].time - timeLeft);
                 checkLevelUp();
-            } else {
-                gameOver("TYPO! Spelling matters.");
-            }
+            } else { gameOver("TYPO!"); }
         }
     });
 
@@ -208,20 +193,15 @@
         currentLevel++;
         if (currentLevel < levels.length) {
             message.className = "success";
-            message.innerHTML = "Lvl " + currentLevel + " Cleared!";
-            setTimeout(() => {
-                message.innerHTML = "";
-                loadLevel();
-            }, 800);
-        } else {
-            finishGame();
-        }
+            message.innerHTML = "Lvl " + currentLevel + " Done!";
+            setTimeout(() => { message.innerHTML = ""; loadLevel(); }, 700);
+        } else { finishGame(); }
     }
 
     function finishGame() {
         message.className = "success";
-        message.innerHTML = "🏆 GAME COMPLETE! ULTIMATE STATUS ACHIEVED.";
-        wordDisplay.innerHTML = "GOD SPEED";
+        message.innerHTML = "🏆 GODLIKE SPEED!";
+        wordDisplay.innerHTML = "Run Complete";
         showStats();
     }
 
@@ -229,10 +209,10 @@
         clearInterval(timerObj);
         userInput.disabled = true;
         message.className = "error";
-        message.innerHTML = reason + " Failed on Level " + (currentLevel + 1);
+        message.innerHTML = reason + " (Failed Level " + (currentLevel + 1) + ")";
         showStats();
         actionBtn.style.display = "inline-block";
-        actionBtn.innerHTML = "Restart Run";
+        actionBtn.innerHTML = "Try Again";
     }
 
     function showStats() {
@@ -240,8 +220,8 @@
         statsPanel.style.display = "block";
         const cps = (totalChars / totalTimeTaken).toFixed(2);
         const wpm = ((totalChars / 5) / (totalTimeTaken / 60)).toFixed(1);
-        document.getElementById("stat-cps").innerHTML = "Avg CPS: " + cps;
-        document.getElementById("stat-wpm").innerHTML = "Avg WPM: " + wpm;
+        document.getElementById("stat-cps").innerHTML = "Average CPS: " + cps;
+        document.getElementById("stat-wpm").innerHTML = "Average WPM: " + wpm;
         userInput.disabled = true;
         actionBtn.style.display = "inline-block";
     }
