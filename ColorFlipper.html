@@ -2,6 +2,12 @@
 <html>
   <head>
     <title>Color Flipper</title>
+    <style>
+      body {
+        transition: background-color 0.4s ease;
+      }
+
+    </style>
   </head>
   <body>
     <div style="text-align: center;">
@@ -58,10 +64,11 @@
       var r = Math.floor(Math.random() * 256);
       var g = Math.floor(Math.random() * 256);
       var b = Math.floor(Math.random() * 256);
-      var color =  "rgb(" + r + "," + g + "," + b + ")";
+      var hex = "#" + r.toString(16).padStart(2,"0") + g.toString(16).padStart(2,"0") + b.toString(16).padStart(2,"0");
+      
       document.body.style.backgroundColor = color;
       RandomButton.style.backgroundColor = color;
-      RGBColor.innerHTML = "RGB: "+r+", "+g+", "+b
+      RGBColor.innerHTML = hex
     }
   </script>
 </html>
