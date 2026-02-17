@@ -1,68 +1,125 @@
-var lives = 0;
-var word = "";
-var wrongGuesses = [];
-var displayArray = []; // Moved here so handleGuess can see it
-var correct = 0;
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hangman Game</title>
+</head>
+<body>
+    <div style="text-align: center;"> 
+        <h1>Hangman Game</h1>
+        <button onclick="selectEasy()" style="width: 150px; height: 80px; font-size: 30px; background-color: Green; color: Black; border-radius: 15px;">Easy</button>
+        <button onclick="selectMedium()" style="width: 150px; height: 80px; font-size: 30px; background-color: Green; color: Black; border-radius: 15px;">Medium</button>
+        <button onclick="selectHard()" style="width: 150px; height: 80px; font-size: 30px; background-color: Green; color: Black; border-radius: 15px;">Hard</button>
+        
+        <h2 id="word">Word: </h2>
+        <h2 id="lives">Lives Left: </h2>
+        <h2 id="wrongGuess">Wrong guesses: </h2>
+        
+        <input type="text" 
+               id="guessInput" 
+               maxlength="1" 
+               autofocus
+               oninput="this.value = this.value.replace(/[^a-zA-Z]/g, '')"
+               onkeydown="if(event.key === 'Enter'){ handleGuess() }">
 
-function selectEasy() {
-    // .length automatically finds the right number of words
-    var x = Math.floor(Math.random() * easy_words.length);
-    word = easy_words[x];
-    displayArray = new Array(word.length).fill("_");
-    lives = 10;
-    updateUI();
-}
+        <h3 id="statusMessage" style="color: black; display: none; font-size: 25px; margin-top: 20px;"></h3>
+    </div>
 
-function selectMedium() {
-    var x = Math.floor(Math.random() * medium_words.length);
-    word = medium_words[x];
-    displayArray = new Array(word.length).fill("_");
-    lives = 6;
-    updateUI();
-}
+    <script>
+        // Word Lists
+        const easy_words = ["bat", "dog", "toy", "cat", "rat", "law", "mud", "boy", "the", "she", "red", "pop", "lie", "bay", "hay", "can", "sad", "mad", "cap", "rap", "met", "fad", "hop", "top", "tap", "lap", "bag", "ham", "ray", "say", "tie", "bit", "hit", "hat", "bet", "bid", "lid", "pad", "and", "tan", "tar", "eat", "ate", "lag", "rag", "tag", "kid", "dip", "rip", "lip", "pod", "rod", "nod", "his", "sis", "gem", "ant", "wad", "win", "nap", "way", "pay", "day", "van", "mom", "dad", "dot", "rot", "tip", "hen", "tin", "fee", "tee", "tea", "pea", "bee", "sea", "see", "men", "man", "did", "sim", "pin", "fib", "yay", "may", "pot", "pan", "run", "ran", "ton", "put", "hut", "but", "cut", "pit", "vat"];
+        const medium_words = ["lemon", "cheese", "happy", "angry", "tomato", "carve", "tattoo", "water", "walks", "visit", "liver", "flight", "height", "skirts", "house", "train", "spoon", "tiger", "zebra", "doctor", "teach", "study", "juice", "bottle", "never", "peace", "donor", "python", "coding", "uncle", "sleeps", "table", "wonder", "growth", "forest", "river", "yellow", "purple", "cycle", "pillow", "school", "queen", "yogurt", "bouncy", "flavor", "guitar", "piano", "breeze", "sunny", "window", "marvel", "gloves", "framed", "sweet", "dirty", "clean", "apple", "coffee", "button", "refer", "climb", "minute", "light", "shelf", "wobble", "tired", "party", "brain", "vault", "tennis", "winter", "cover", "paper", "pencil", "hello"];
+        const hard_words = ["congratulations", "absolutely", "photosynthesis", "monstrosity", "university", "cheeseburger", "accommodate", "suburban", "pizazz", "assuming", "stewardess", "xylophone", "overzealous", "withdrawal", "wednesday", "vulnerable", "visualization", "versatile", "veterinary", "vaccination", "vegetarian", "unanimous", "transmission", "trajectory", "temporary", "tournament", "temperature", "surveillance", "psychology", "responsibility", "recommendation", "pronunciation", "practicioner", "plagiarism", "pilgrimage", "philosophy", "participation", "nutritious", "necessarily", "miscellaneous", "marshmallows", "mayonnaise", "leprechaun", "limousine", "kindergarten", "knowledgeable", "interference", "inflammation", "handkerchief", "fluorescent", "extraordinary", "pharmaceutical", "exhiliration", "environmental", "disappointment", "choreography", "circumstantial", "cauliflower", "cantaloupe", "auditorium", "apostrophe", "amphitheater", "advantageous", "acknowledgement", "abbreviation", "abundant", "accommodation", "adjustment", "ambidextrous", "asymmetrical", "auxiliary", "bachelorette", "bureaucracy", "behavioral", "boulevard", "camouflage", "determination", "differentiation", "description", "dysfunctional", "impressionable", "enthusiastic", "entrepreneur", "eavesdropping", "exaggerated", "fascinating", "governmental", "hygienic", "immediately", "individuality", "interpretation", "laboratory", "labyrinth", "lieutenant", "lightning", "legitimate", "likelihood", "maintenance", "masquerade", "medicinal", "mezzanine", "medieval", "mischievious", "misunderstood", "pneumonia", "noticeable", "opportunity", "overwhelming", "picturesque", "pilgrimage", "prohibitive", "quadruple", "ridiculous", "sacrilegious", "rudimentary", "chandelier", "sophomore", "superfluous", "susceptible", "suspicious", "synonymous", "tomorrow", "zucchini"];
 
-function selectHard() {
-    var x = Math.floor(Math.random() * hard_words.length);
-    word = hard_words[x];
-    displayArray = new Array(word.length).fill("_");
-    lives = 6;
-    updateUI();
-}
+        // Game Variables
+        var lives = 0;
+        var word = "";
+        var wrongGuesses = [];
+        var displayArray = [];
+        var correct = 0;
 
-function handleGuess() {
-    var letter = document.getElementById("guessInput").value.toLowerCase();
-    if (letter === "" || word === "") return;
-
-    correct = 0; // Reset this for every new guess
-    
-    for (let i = 0; i < word.length; i++) {
-        if (letter === word[i]) {
-            correct = 1;
-            displayArray[i] = letter;
+        // Shared function to reset game state
+        function resetGame(selectedWord, selectedLives) {
+            word = selectedWord;
+            lives = selectedLives;
+            wrongGuesses = [];
+            displayArray = new Array(word.length).fill("_");
+            
+            // UI Reset
+            document.getElementById("statusMessage").style.display = "none";
+            document.getElementById("guessInput").disabled = false;
+            document.getElementById("guessInput").value = "";
+            document.getElementById("guessInput").focus();
+            
+            updateUI();
         }
-    }
 
-    if (correct === 0) {
-        lives -= 1;
-        wrongGuesses.push(letter);
-    }
+        function selectEasy() {
+            let x = Math.floor(Math.random() * easy_words.length);
+            resetGame(easy_words[x], 10);
+        }
 
-    document.getElementById("guessInput").value = "";
-    updateUI(); // I put all the display updates in one place
-}
+        function selectMedium() {
+            let x = Math.floor(Math.random() * medium_words.length);
+            resetGame(medium_words[x], 6);
+        }
 
-// This helper function refreshes the text on the screen
-function updateUI() {
-    document.getElementById("word").innerText = "Word: " + displayArray.join(" ");
-    document.getElementById("lives").innerText = "Lives Left: " + lives;
-    document.getElementById("wrongGuess").innerText = "Wrong guesses: " + wrongGuesses.join(", ");
-    
-    // Check for Win/Loss
-    if (lives <= 0) {
-        alert("Game Over! The word was: " + word);
-        location.reload(); // Restarts the game
-    } else if (!displayArray.includes("_") && word !== "") {
-        alert("You Win!");
-        location.reload();
-    }
-}
+        function selectHard() {
+            let x = Math.floor(Math.random() * hard_words.length);
+            resetGame(hard_words[x], 6);
+        }
+
+        function handleGuess() {
+            var input = document.getElementById("guessInput");
+            var letter = input.value.toLowerCase();
+            
+            if (letter === "" || word === "") return;
+            
+            // Check if letter was already guessed
+            if (wrongGuesses.includes(letter) || displayArray.includes(letter)) {
+                input.value = "";
+                return;
+            }
+
+            correct = 0;
+            for (let i = 0; i < word.length; i++) {
+                if (letter === word[i]) {
+                    correct = 1;
+                    displayArray[i] = letter;
+                }
+            }
+
+            if (correct === 0) {
+                lives -= 1;
+                wrongGuesses.push(letter);
+            }
+
+            input.value = "";
+            updateUI();
+        }
+
+        function updateUI() {
+            document.getElementById("word").innerText = "Word: " + displayArray.join(" ");
+            document.getElementById("lives").innerText = "Lives Left: " + lives;
+            document.getElementById("wrongGuess").innerText = "Wrong guesses: " + wrongGuesses.join(", ");
+            
+            let status = document.getElementById("statusMessage");
+            let inputField = document.getElementById("guessInput");
+
+            // Loss Condition
+            if (lives <= 0 && word !== "") {
+                status.innerText = "GAME OVER! The word was: " + word;
+                status.style.display = "block";
+                status.style.color = "red";
+                inputField.disabled = true;
+            } 
+            // Win Condition
+            else if (!displayArray.includes("_") && word !== "") {
+                status.innerText = "YOU WIN! You guessed the word!";
+                status.style.display = "block";
+                status.style.color = "green";
+                inputField.disabled = true;
+            }
+        }
+    </script>
+</body>
+</html>
