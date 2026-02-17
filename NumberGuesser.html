@@ -22,6 +22,9 @@
           background-color: #333;
           color: white;
           text-align: center;
+          display: block;
+          margin: 0 auto;
+  
         }
     </style>
   </head>
@@ -97,16 +100,16 @@
         var guess = Number(document.getElementById("Input2").value);
         if (guess === answer){
           document.getElementById("Feedback2").innerText = "Congratulations! You guessed the number I was thinking of in 2 tries."
-          document.getElementById("Feedback1").style.color = "lightgreen";
+          document.getElementById("Feedback2").style.color = "lightgreen";
           return;
         }
         if (guess < answer){
           document.getElementById("Feedback2").innerText = guess + " is less than the number I am thinking of."
-          document.getElementById("Feedback1").style.color = "salmon";
+          document.getElementById("Feedback2").style.color = "salmon";
         }
         if (guess > answer){
           document.getElementById("Feedback2").innerText = guess + " is greater than the number I am thinking of."
-          document.getElementById("Feedback1").style.color = "salmon";
+          document.getElementById("Feedback2").style.color = "salmon";
         }
         document.getElementById("Feedback2").style.display = "block";
         document.getElementById("Question3").style.display = "block";
@@ -118,16 +121,16 @@
         var guess = Number(document.getElementById("Input3").value);
         if (guess === answer){
           document.getElementById("Feedback3").innerText = "Congratulations! You guessed the number I was thinking of in 3 tries."
-          document.getElementById("Feedback1").style.color = "lightgreen";
+          document.getElementById("Feedback3").style.color = "lightgreen";
           return;
         }
         if (guess < answer){
           document.getElementById("Feedback3").innerText = guess + " is less than the number I am thinking of."
-          document.getElementById("Feedback1").style.color = "salmon";
+          document.getElementById("Feedback3").style.color = "salmon";
         }
         if (guess > answer){
           document.getElementById("Feedback3").innerText = guess + " is greater than the number I am thinking of."
-          document.getElementById("Feedback1").style.color = "salmon";
+          document.getElementById("Feedback3").style.color = "salmon";
         }
         document.getElementById("Feedback3").style.display = "block";
         document.getElementById("Question4").style.display = "block";
@@ -139,16 +142,16 @@
         var guess = Number(document.getElementById("Input4").value);
         if (guess === answer){
           document.getElementById("Feedback4").innerText = "Congratulations! You guessed the number I was thinking of in 4 tries."
-          document.getElementById("Feedback1").style.color = "lightgreen";
+          document.getElementById("Feedback4").style.color = "lightgreen";
           return;
         }
         if (guess < answer){
           document.getElementById("Feedback4").innerText = guess + " is less than the number I am thinking of."
-          document.getElementById("Feedback1").style.color = "salmon";
+          document.getElementById("Feedback4").style.color = "salmon";
         }
         if (guess > answer){
           document.getElementById("Feedback4").innerText = guess + " is greater than the number I am thinking of."
-          document.getElementById("Feedback1").style.color = "salmon";
+          document.getElementById("Feedback4").style.color = "salmon";
         }
         document.getElementById("Feedback4").style.display = "block";
         document.getElementById("Question5").style.display = "block";
@@ -160,16 +163,16 @@
         var guess = Number(document.getElementById("Input5").value);
         if (guess === answer){
           document.getElementById("Feedback5").innerText = "Congratulations! You guessed the number I was thinking of in 5 tries."
-          document.getElementById("Feedback1").style.color = "lightgreen";
+          document.getElementById("Feedback5").style.color = "lightgreen";
           return;
         }
         if (guess < answer){
           document.getElementById("Feedback5").innerText = guess + " is less than the number I am thinking of."
-          document.getElementById("Feedback1").style.color = "salmon";
+          document.getElementById("Feedback5").style.color = "salmon";
         }
         if (guess > answer){
           document.getElementById("Feedback5").innerText = guess + " is greater than the number I am thinking of."
-          document.getElementById("Feedback1").style.color = "salmon";
+          document.getElementById("Feedback5").style.color = "salmon";
         }
         document.getElementById("Feedback5").style.display = "block";
         document.getElementById("Question6").style.display = "block";
@@ -181,16 +184,16 @@
         var guess = Number(document.getElementById("Input6").value);
         if (guess === answer){
           document.getElementById("Feedback6").innerText = "Congratulations! You guessed the number I was thinking of in 6 tries."
-          document.getElementById("Feedback1").style.color = "lightgreen";
+          document.getElementById("Feedback6").style.color = "lightgreen";
           return;
         }
         if (guess < answer){
           document.getElementById("Feedback6").innerText = guess + " is less than the number I am thinking of."
-          document.getElementById("Feedback1").style.color = "salmon";
+          document.getElementById("Feedback6").style.color = "salmon";
         }
         if (guess > answer){
           document.getElementById("Feedback6").innerText = guess + " is greater than the number I am thinking of."
-          document.getElementById("Feedback1").style.color = "salmon";
+          document.getElementById("Feedback6").style.color = "salmon";
         }
         document.getElementById("Feedback6").style.display = "block";
         document.getElementById("Question7").style.display = "block";
@@ -202,12 +205,12 @@
         var guess = Number(document.getElementById("Input7").value);
         if (guess === answer){
           document.getElementById("Feedback7").innerText = "Congratulations! You guessed the number I was thinking of in 7 tries."
-          document.getElementById("Feedback1").style.color = "lightgreen";
+          document.getElementById("Feedback7").style.color = "lightgreen";
           
         }
         else{
           document.getElementById("Feedback7").innerText = "Wrong! The number I was thinking of was " + answer + " ."
-          document.getElementById("Feedback1").style.color = "salmon";
+          document.getElementById("Feedback7").style.color = "salmon";
         }
         document.getElementById("Feedback7").style.display = "block";
       }
