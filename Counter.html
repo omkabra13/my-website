@@ -1,17 +1,45 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <title>Counter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+      body {
+        background-color: #1a1a1a;
+        color: white;
+        font-family: 'Poppins', sans-serif;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      button {
+        width: 150px;
+        height: 80px;
+        font-size: 1.2rem;
+        border-radius: 10px;
+        border: 2px solid white;
+        background-color: #333;
+        color: white;
+        cursor: pointer;
+        font-family: 'Poppins', sans-serif;
+        margin: 0.5rem;
+      }
+      button:hover {
+        background-color: #555;
+      }
+    </style>
+  </head>
   <body>
     <div style="text-align: center;">
       <p style = "font-size: 100px;">Counter</p>
       <p id = "counter" style = "font-size: 60px;">0</p>
     
-      <button onclick="increase()" style = "width: 150px; height: 80px; font-size: 30px; background-color: Green; color: Black; border-radius: 15px;">Increase</button>
-      <button onclick="decrease()" style = "width: 150px; height: 80px; font-size: 30px; background-color: Green; color: Black; border-radius: 15px;">Decrease</button>
-      <br>
-      <br>
-      <a href="index.html">
-        <button style = "width: 250px; height: 100px; font-size: 40px; background-color: Yellow; color: Red; border-radius: 20px;">Home Page</button>
-      </a>
+      <button onclick="increase()">Increase</button>
+      <button onclick="decrease()">Decrease</button>
+      <button onclick="reset()">Reset</button>
+      <a href="index.html"><button>Home Page</button></a>
     </div>
     
   <script>
@@ -19,12 +47,26 @@
   
       function increase() {
         count+= 1
+        var el = document.getElementById("counter");
+        if (count > 0) el.style.color = "lightgreen";
+        else if (count < 0) el.style.color = "salmon";
+        else el.style.color = "white";
         document.getElementById("counter").innerHTML = count
       }
   
       function decrease() {
+        
         count -= 1
+        var el = document.getElementById("counter");
+        if (count > 0) el.style.color = "lightgreen";
+        else if (count < 0) el.style.color = "salmon";
+        else el.style.color = "white";
         document.getElementById("counter").innerHTML = count
+      }
+      function reset() {
+        count = 0;
+        document.getElementById("counter").innerHTML = 0;
+        document.getElementById("counter").style.color = "white";
       }
   
       
