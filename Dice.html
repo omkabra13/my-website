@@ -43,8 +43,18 @@
       a {
         display: block;
       }
-      #dice {
-        mix-blend-mode: multiply;
+      .chart {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .stats {
+        display: flex;
+        width: 500px; /* same as canvas width */
+        justify-content: space-around;
+        margin-top: 0.5rem;
+        font-size: 0.9rem;
       }
         
     </style>
@@ -67,26 +77,17 @@
       </button>
       <br>
       <p></p>
-      <canvas id="gameCanvas" width="500" height="10000"></canvas>
-    </div>
-    <div id="Text1" style="position: absolute; left: 580px; top: 670px; font-family: Arial; font-size: 12px; color: black;">
-      0/0 = 0%
-    </div>
-    <div id="Text2" style="position: absolute; left: 660px; top: 670px; font-family: Arial; font-size: 12px; color: black;">
-      0/0 = 0%
-    </div>
-    <div id="Text3" style="position: absolute; left: 740px; top: 670px; font-family: Arial; font-size: 12px; color: black;">
-      0/0 = 0%
-    </div>
-    <div id="Text4" style="position: absolute; left: 820px; top: 670px; font-family: Arial; font-size: 12px; color: black;">
-      0/0 = 0%
-    </div>
-    <div id="Text5" style="position: absolute; left: 900px; top: 670px; font-family: Arial; font-size: 12px; color: black;">
-      0/0 = 0%
-    </div>
-    <div id="Text6" style="position: absolute; left: 980px; top: 670px; font-family: Arial; font-size: 12px; color: black;">
-      0/0 = 0%
-    </div>
+      <div class="chart">
+        <canvas id="gameCanvas" width="500" height="500"></canvas>
+        <div class="stats">
+          <div id="Text1">1: 0/0 = 0%</div>
+          <div id="Text2">2: 0/0 = 0%</div>
+          <div id="Text3">3: 0/0 = 0%</div>
+          <div id="Text4">4: 0/0 = 0%</div>
+          <div id="Text5">5: 0/0 = 0%</div>
+          <div id="Text6">6: 0/0 = 0%</div>
+        </div>
+      </div>
     <script>
       var diceImg = document.getElementById("dice");
       var x = 1;
