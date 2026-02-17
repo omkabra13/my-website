@@ -1,18 +1,48 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <title>Stopwatch</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+      body {
+        background-color: #1a1a1a;
+        color: white;
+        font-family: 'Poppins', sans-serif;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      button {
+        width: 150px;
+        height: 80px;
+        font-size: 1.2rem;
+        border-radius: 10px;
+        border: 2px solid white;
+        background-color: #333;
+        color: white;
+        cursor: pointer;
+        font-family: 'Poppins', sans-serif;
+        margin: 0.5rem;
+      }
+      button:hover {
+        background-color: #555;
+      }
+    </style>
+  </head>
+
   <body>
     <div style="text-align: center;">
       <p style = "font-size: 100px;">Stopwatch</p>
       <p id = "time" style = "font-size: 60px;">0:00:00</p>
     
-      <button onclick="start()" style = "width: 150px; height: 80px; font-size: 30px; background-color: Green; color: Black; border-radius: 15px;">Start</button>
-      <button onclick="stop()" style = "width: 150px; height: 80px; font-size: 30px; background-color: Green; color: Black; border-radius: 15px;">Stop</button>
-      <button onclick="reset()" style = "width: 150px; height: 80px; font-size: 30px; background-color: Green; color: Black; border-radius: 15px;">Reset</button>
+      <button onclick="start()">Start</button>
+      <button onclick="stop()">Stop</button>
+      <button onclick="reset()">Reset</button>
       <br>
       <br>
-      <a href="index.html">
-        <button style = "width: 250px; height: 100px; font-size: 40px; background-color: Yellow; color: Red; border-radius: 20px;">Home Page</button>
-      </a>
+      <a href="index.html"><button>Home Page</button></a>
     </div>
     
   <script>
