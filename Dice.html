@@ -59,10 +59,10 @@
       <h1> Dice Simulator </h1>
       <br>
       
-      <img id = "dice" src="NewDice1.png" alt="the dice" style = "width:300px;height:300px;">
+      <img id = "dice" src="RealDice1.png" alt="the dice" style = "width:300px;height:300px;">
       <br>
       <br>
-      <button id = "roll" onclick = rollDice() style = "width: 250px; height: 100px; font-size: 40px; background-color: lightgreen; color: red; border-radius: 20px;">
+      <button id = "roll" onclick = rollDice()>
         ROLL
       </button>
       <br>
@@ -100,9 +100,9 @@
         total += 1;
         x = Math.floor((Math.random() * 6) + 1);
         frequency[x-1] += 1;
-        diceImg.src = "NewDice"+x+".png";
+        diceImg.src = "RealDice"+x+".png";
         var img = new Image();
-        img.src = "NewDice"+x+".png";
+        img.src = "RealDice"+x+".png";
         img.onload = function() {
           ctx.drawImage(img, 18+(x-1)*80, 30+80*frequency[x-1], 64, 64);
           
