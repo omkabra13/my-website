@@ -1,8 +1,56 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>  Dice Simulator </title>
+    <title>Hangman Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+      body {
+        background-color: #1a1a1a;
+        color: white;
+        font-family: 'Poppins', sans-serif;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      button {
+        width: 150px;
+        height: 80px;
+        font-size: 1.2rem;
+        border-radius: 10px;
+        border: 2px solid white;
+        background-color: #333;
+        color: white;
+        cursor: pointer;
+        font-family: 'Poppins', sans-serif;
+        margin: 0.5rem;
+      }
+      button:hover {
+        background-color: #555;
+      }
+      input {
+          padding: 0.5rem 1rem;
+          font-size: 1.2rem;
+          border-radius: 10px;
+          border: 2px solid white;
+          background-color: #333;
+          color: white;
+          text-align: center;
+          display: block;
+          margin: 0 auto;
+      }
+      a {
+        display: block;
+      }
+      #dice {
+        mix-blend-mode: multiply;
+      }
+        
+    </style>
   </head>
+
+
   <body>
     
     <br>
