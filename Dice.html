@@ -64,12 +64,12 @@
       <div class="chart">
         <canvas id="gameCanvas" width="500" height="500"></canvas>
         <div class="stats">
-          <div id="Text1">1: 0/0 = 0%</div>
-          <div id="Text2">2: 0/0 = 0%</div>
-          <div id="Text3">3: 0/0 = 0%</div>
-          <div id="Text4">4: 0/0 = 0%</div>
-          <div id="Text5">5: 0/0 = 0%</div>
-          <div id="Text6">6: 0/0 = 0%</div>
+          <div id="Text1">0/0 = 0%</div>
+          <div id="Text2">0/0 = 0%</div>
+          <div id="Text3">0/0 = 0%</div>
+          <div id="Text4">0/0 = 0%</div>
+          <div id="Text5">0/0 = 0%</div>
+          <div id="Text6">0/0 = 0%</div>
         </div>
       </div>
 
@@ -123,7 +123,7 @@
         for (let i = 0; i < 6; i++) {
           let pct = total === 0 ? 0 : Math.floor(100 * frequency[i] / total);
           document.getElementById("Text" + (i+1)).innerHTML =
-            (i+1) + ": " + frequency[i] + "/" + total + " = " + pct + "%";
+            frequency[i] + "/" + total + " = " + pct + "%";
         }
       }
 
