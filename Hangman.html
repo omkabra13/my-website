@@ -2,6 +2,45 @@
 <html>
 <head>
     <title>Hangman Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+      body {
+        background-color: #1a1a1a;
+        color: white;
+        font-family: 'Poppins', sans-serif;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      button {
+        width: 150px;
+        height: 80px;
+        font-size: 1.2rem;
+        border-radius: 10px;
+        border: 2px solid white;
+        background-color: #333;
+        color: white;
+        cursor: pointer;
+        font-family: 'Poppins', sans-serif;
+        margin: 0.5rem;
+      }
+      button:hover {
+        background-color: #555;
+      }
+      input {
+          padding: 0.5rem 1rem;
+          font-size: 1.2rem;
+          border-radius: 10px;
+          border: 2px solid white;
+          background-color: #333;
+          color: white;
+          text-align: center;
+          display: block;
+          margin: 0 auto;
+      }
+    </style>
 </head>
 <body>
     <div style="text-align: center;"> 
@@ -21,7 +60,9 @@
                oninput="this.value = this.value.replace(/[^a-zA-Z]/g, '')"
                onkeydown="if(event.key === 'Enter'){ handleGuess() }">
 
-        <h3 id="statusMessage" style="color: black; display: none; font-size: 25px; margin-top: 20px;"></h3>
+        <h3 id="statusMessage" style="display: none; font-size: 25px; margin-top: 20px;"></h3>
+        <button id="playAgain" style="display:none;" onclick="location.reload()">Play Again</button>
+        <a href="index.html"><button>Home Page</button></a>
     </div>
 
     <script>
@@ -111,6 +152,7 @@
                 status.style.display = "block";
                 status.style.color = "red";
                 inputField.disabled = true;
+                document.getElementById("playAgain").style.display = "block";
             } 
             // Win Condition
             else if (!displayArray.includes("_") && word !== "") {
@@ -118,6 +160,7 @@
                 status.style.display = "block";
                 status.style.color = "green";
                 inputField.disabled = true;
+                document.getElementById("playAgain").style.display = "block";
             }
         }
     </script>
