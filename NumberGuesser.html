@@ -26,6 +26,20 @@
           margin: 0 auto;
   
         }
+        button {
+          margin-top: 1rem;
+          padding: 0.75rem 2rem;
+          font-size: 1rem;
+          border-radius: 10px;
+          border: 2px solid white;
+          background-color: #333;
+          color: white;
+          cursor: pointer;
+          font-family: 'Poppins', sans-serif;
+        }
+        button:hover {
+          background-color: #555;
+        }
     </style>
   </head>
   <body>
@@ -55,6 +69,8 @@
       <h3 id="Question7" style="display: none;"> What is your seventh guess?</h3>
       <input type="text" id="Input7" style="display: none;" onkeydown="if(event.key === 'Enter'){hint7()} else {return onlyPositiveIntegers(event)}">
       <h3 id="Feedback7" style="display: none;"> placeholder</h3>
+      <button id="playAgain" style="display:none;" onclick="location.reload()">Play Again</button>
+      <a href="index.html"><button>Home Page</button></a>
     </div>
 
     <script>
@@ -78,6 +94,7 @@
         var guess = Number(document.getElementById("Input1").value);
         if (guess === answer){
           document.getElementById("Feedback1").innerText = "Congratulations! You guessed the number I was thinking of in 1 try."
+          document.getElementById("Feedback1").style.display = "block";
           document.getElementById("Feedback1").style.color = "lightgreen";
           return;
         }
@@ -100,6 +117,7 @@
         var guess = Number(document.getElementById("Input2").value);
         if (guess === answer){
           document.getElementById("Feedback2").innerText = "Congratulations! You guessed the number I was thinking of in 2 tries."
+          document.getElementById("Feedback2").style.display = "block";
           document.getElementById("Feedback2").style.color = "lightgreen";
           return;
         }
@@ -121,6 +139,7 @@
         var guess = Number(document.getElementById("Input3").value);
         if (guess === answer){
           document.getElementById("Feedback3").innerText = "Congratulations! You guessed the number I was thinking of in 3 tries."
+          document.getElementById("Feedback3").style.display = "block";
           document.getElementById("Feedback3").style.color = "lightgreen";
           return;
         }
@@ -142,6 +161,7 @@
         var guess = Number(document.getElementById("Input4").value);
         if (guess === answer){
           document.getElementById("Feedback4").innerText = "Congratulations! You guessed the number I was thinking of in 4 tries."
+          document.getElementById("Feedback4").style.display = "block";
           document.getElementById("Feedback4").style.color = "lightgreen";
           return;
         }
@@ -163,6 +183,7 @@
         var guess = Number(document.getElementById("Input5").value);
         if (guess === answer){
           document.getElementById("Feedback5").innerText = "Congratulations! You guessed the number I was thinking of in 5 tries."
+          document.getElementById("Feedback5").style.display = "block";
           document.getElementById("Feedback5").style.color = "lightgreen";
           return;
         }
@@ -184,6 +205,7 @@
         var guess = Number(document.getElementById("Input6").value);
         if (guess === answer){
           document.getElementById("Feedback6").innerText = "Congratulations! You guessed the number I was thinking of in 6 tries."
+          document.getElementById("Feedback6").style.display = "block";
           document.getElementById("Feedback6").style.color = "lightgreen";
           return;
         }
@@ -205,6 +227,7 @@
         var guess = Number(document.getElementById("Input7").value);
         if (guess === answer){
           document.getElementById("Feedback7").innerText = "Congratulations! You guessed the number I was thinking of in 7 tries."
+          document.getElementById("Feedback7").style.display = "block";
           document.getElementById("Feedback7").style.color = "lightgreen";
           
         }
@@ -213,6 +236,7 @@
           document.getElementById("Feedback7").style.color = "salmon";
         }
         document.getElementById("Feedback7").style.display = "block";
+        document.getElementById("playAgain").style.display = "block";
       }
     </script>
   </body>
