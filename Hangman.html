@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title> Hangman Game</title>
+  </head>
+  <body>
+    <div style = "text-align: center;"> 
+      <h1>Hangman Game</h1>
+      <button onclick="selectEasy()" style = "width: 150px; height: 80px; font-size: 30px; background-color: Green; color: Black; border-radius: 15px;">Easy</button>
+      <button onclick="selectMedium()" style = "width: 150px; height: 80px; font-size: 30px; background-color: Green; color: Black; border-radius: 15px;">Medium</button>
+      <button onclick="selectHard()" style = "width: 150px; height: 80px; font-size: 30px; background-color: Green; color: Black; border-radius: 15px;">Hard</button>
+      <h2 id = "word"> Word: </h2> <br>
+      <h2 id = "lives"> Lives Left: </h2> <br>
+      <h2 id = "wrongGuess"> Wrong guesses: </h2> <br>
+      
+      <input type="text" 
+       id="guessInput" 
+       maxlength="1" 
+       oninput="this.value = this.value.replace(/[^a-zA-Z]/g, '')"
+       onkeydown="if(event.key === 'Enter'){ handleGuess() }">
+    </div>
+    <script>
+      easy_words = [
+        "bat",
+        "dog",
+        "toy",
+        "cat",
+        "rat",
+        "law",
+        "mud",
+        "boy",
+        "the",
+        "she",
+        "red",
+        "pop",
+        "lie",
+        "bay",
+        "hay",
+        "can",
+        "sad",
+        "mad",
+        "cap",
+        "rap",
+        "met",
+        "fad",
+        "hop",
+        "top",
+        "tap",
+        "lap",
+        "lie",
+        "bag",
+        "ham",
+        "ray",
+        "say",
+        "tie",
+        "bit",
+        "hit",
+        "hat",
+        "bet",
+        "bid",
+        "lid",
+        "pad",
+        "and",
+        "tan",
+        "tar",
+        "eat",
+        "ate",
+        "lag",
+        "rag",
+        "tag",
+        "kid",
+        "dip",
+        "rip",
+        "lip",
+        "pod",
+        "rod",
+        "nod",
+        "his",
+        "sis",
+        "gem",
+        "ant",
+        "wad",
+        "win",
+        "nap",
+        "way",
+        "pay",
+        "day",
+        "van",
+        "mom",
+        "dad",
+        "dot",
+        "rot",
+        "tip",
+        "hen",
+        "tin",
+        "fee",
+        "tee",
+        "tea",
+        "pea",
+        "bee",
+        "sea",
+        "see",
+        "men",
+        "man",
+        "did",
+        "sim",
+        "pin",
+        "fib",
+        "yay",
+        "may",
+        "pot",
+        "pan",
+        "run",
+        "ran",
+        "ton",
+        "put",
+        "hut",
+        "but",
+        "cut",
+        "pit",
+        "vat",
+      ]
+
+      medium_words = [
+        "lemon",
+        "cheese",
+        "happy",
+        "angry",
+        "tomato",
+        "carve",
+        "tattoo",
+        "water",
+        "walks",
+        "visit",
+        "liver",
+        "flight",
+        "height",
+        "skirts",
+        "house",
+        "train",
+        "spoon",
+        "tiger",
+        "zebra",
+        "doctor",
+        "teach",
+        "study",
+        "juice",
+        "bottle",
+        "never",
+        "peace",
+        "donor",
+        "python",
+        "coding",
+        "uncle",
+        "sleeps",
+        "table",
+        "wonder",
+        "growth",
+        "forest",
+        "river",
+        "yellow",
+        "purple",
+        "cycle",
+        "pillow",
+        "school",
+        "queen",
+        "yogurt",
+        "bouncy",
+        "flavor",
+        "guitar",
+        "piano",
+        "breeze",
+        "sunny",
+        "window",
+        "marvel",
+        "gloves",
+        "framed",
+        "sweet",
+        "dirty",
+        "clean",
+        "apple",
+        "coffee",
+        "button",
+        "refer",
+        "climb",
+        "minute",
+        "light",
+        "shelf",
+        "wobble",
+        "tired",
+        "party",
+        "brain",
+        "vault",
+        "tennis",
+        "winter",
+        "cover",
+        "paper",
+        "pencil",
+        "hello",
+      ]
+
+      hard_words = [
+        "congratulations",
+        "absolutely",
+        "photosynthesis",
+        "monstrosity",
+        "university",
+        "cheeseburger",
+        "accommodate",
+        "suburban",
+        "pizazz",
+        "assuming",
+        "stewardess",
+        "xylophone",
+        "overzealous",
+        "withdrawal",
+        "wednesday",
+        "vulnerable",
+        "visualization",
+        "versatile",
+        "veterinary",
+        "vaccination",
+        "vegetarian",
+        "unanimous",
+        "transmission",
+        "trajectory",
+        "temporary",
+        "tournament",
+        "temperature",
+        "surveillance",
+        "psychology",
+        "responsibility",
+        "recommendation",
+        "pronunciation",
+        "practicioner",
+        "plagiarism",
+        "pilgrimage",
+        "philosophy",
+        "participation",
+        "nutritious",
+        "necessarily",
+        "miscellaneous",
+        "marshmallows",
+        "mayonnaise",
+        "leprechaun",
+        "limousine",
+        "kindergarten",
+        "knowledgeable",
+        "interference",
+        "inflammation",
+        "handkerchief",
+        "fluorescent",
+        "extraordinary",
+        "pharmaceutical",
+        "exhiliration",
+        "environmental",
+        "disappointment",
+        "choreography",
+        "circumstantial",
+        "cauliflower",
+        "cantaloupe",
+        "auditorium",
+        "apostrophe",
+        "amphitheater",
+        "advantageous",
+        "acknowledgement",
+        "abbreviation",
+        "abundant",
+        "accommodation",
+        "adjustment",
+        "ambidextrous",
+        "asymmetrical",
+        "auxiliary",
+        "bachelorette",
+        "bureaucracy",
+        "behavioral",
+        "boulevard",
+        "camouflage",
+        "determination",
+        "differentiation",
+        "description",
+        "dysfunctional",
+        "impressionable",
+        "enthusiastic",
+        "entrepreneur",
+        "eavesdropping",
+        "exaggerated",
+        "fascinating",
+        "governmental",
+        "hygienic",
+        "immediately",
+        "individuality",
+        "interpretation",
+        "laboratory",
+        "labyrinth",
+        "lieutenant",
+        "lightning",
+        "legitimate",
+        "likelihood",
+        "maintenance",
+        "masquerade",
+        "medicinal",
+        "mezzanine",
+        "medieval",
+        "mischievious",
+        "misunderstood",
+        "pneumonia",
+        "noticeable",
+        "opportunity",
+        "overwhelming",
+        "picturesque",
+        "pilgrimage",
+        "prohibitive",
+        "quadruple",
+        "ridiculous",
+        "sacrilegious",
+        "rudimentary",
+        "chandelier",
+        "sophomore",
+        "superfluous",
+        "susceptible",
+        "suspicious",
+        "synonymous",
+        "tomorrow",
+        "zucchini",
+      ]
+
+      var lives = 0
+      var word = 0
+      var wrongGuesses = []
+      var correct = 0
+      function selectEasy(){
+        x = Math.floor(Math.random()*97);
+        word = easy_words[x];
+        let displayArray  = new Array(word.length).fill("_");
+        lives = 10;
+      }
+      function selectMedium(){
+        x = Math.floor(Math.random()*74);
+        word = medium_words[x];
+        let displayArray  = new Array(word.length).fill("_");
+        lives = 6;
+      }
+      function selectHard(){
+        x = Math.floor(Math.random()*122)
+        word = hard_words[x]
+        let displayArray  = new Array(word.length).fill("_");
+        lives = 6;
+      }
+      function handleGuess() {
+    
+        var letter = document.getElementById("guessInput").value.toLowerCase();
+        
+        if (letter === "") return; 
+        for (let i = 0; i < word.length; i++) {
+          if (letter === word[i]){
+            correct = 1
+            displayArray[i] = letter
+          }
+      
+        }
+        if (correct === 0):
+          lives -= 1
+          wrongGuesses.push(letter)
+        
+        correct = 0
+        document.getElementById("guessInput").value = "";
+        document.getElementbyId("word").innerText = displayArray.join(" ");
+        document.getElementbyId("lives").innerText = "Lives left: " + lives;
+        document.getElementbyId("wrongGuess").innerText = wrongGuesses.join(", ");
+      }
+
+
+
+    </script>
+  </body>
+</html>
