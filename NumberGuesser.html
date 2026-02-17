@@ -10,147 +10,152 @@
       <h2> I am thinking of a number between 1 and 100, inclusive. You have 7 guesses. </h2>
       <br>
       <h3> What is your first guess?</h3>
-      <input type="text" id="Input1" onkeydown="return onlyPositiveIntegers(event)" oninput="hint1()">
-      <h3 id = Feedback1 style = "display: none;"> placeholder</h3>
-      <h3 id = Question2 style = "display: none;"> What is your second guess?</h3>
-      <input type="text" id="Input2" onkeydown="return onlyPositiveIntegers(event)" style="display: none;" oninput="hint2()">
-      <h3 id = Feedback2 style = "display: none;"> placeholder</h3>
-      <h3 id = Question3 style = "display: none;"> What is your third guess?</h3>
-      <input type="text" id="Input3" onkeydown="return onlyPositiveIntegers(event)" style="display: none;" oninput="hint3()">
-      <h3 id = Feedback3 style = "display: none;"> placeholder</h3>
-      <h3 id = Question4 style = "display: none;"> What is your fourth guess?</h3>
-      <input type="text" id="Input4" onkeydown="return onlyPositiveIntegers(event)" style="display: none;" oninput="hint4()">
-      <h3 id = Feedback4 style = "display: none;"> placeholder</h3>
-      <h3 id = Question5 style = "display: none;"> What is your fifth guess?</h3>
-      <input type="text" id="Input5" onkeydown="return onlyPositiveIntegers(event)" style="display: none;" oninput="hint5()">
-      <h3 id = Feedback5 style = "display: none;"> placeholder</h3>
-      <h3 id = Question6 style = "display: none;"> What is your sixth guess?</h3>
-      <input type="text" id="Input6" onkeydown="return onlyPositiveIntegers(event)" style="display: none;" oninput="hint6()">
-      <h3 id = Feedback6 style = "display: none;"> placeholder</h3>
-      <h3 id = Question7 style = "display: none;"> What is your seventh guess?</h3>
-      <input type="text" id="Input7" onkeydown="return onlyPositiveIntegers(event)" style="display: none;" oninput="hint7()">
-      <h3 id = Feedback7 style = "display: none;"> placeholder</h3>
-      
-      
-      
+      <input type="text" id="Input1" onkeydown="if(event.key === 'Enter'){hint1()} else {return onlyPositiveIntegers(event)}">
+      <h3 id="Feedback1" style="display: none;"> placeholder</h3>
+      <h3 id="Question2" style="display: none;"> What is your second guess?</h3>
+      <input type="text" id="Input2" style="display: none;" onkeydown="if(event.key === 'Enter'){hint2()} else {return onlyPositiveIntegers(event)}">
+      <h3 id="Feedback2" style="display: none;"> placeholder</h3>
+      <h3 id="Question3" style="display: none;"> What is your third guess?</h3>
+      <input type="text" id="Input3" style="display: none;" onkeydown="if(event.key === 'Enter'){hint3()} else {return onlyPositiveIntegers(event)}">
+      <h3 id="Feedback3" style="display: none;"> placeholder</h3>
+      <h3 id="Question4" style="display: none;"> What is your fourth guess?</h3>
+      <input type="text" id="Input4" style="display: none;" onkeydown="if(event.key === 'Enter'){hint4()} else {return onlyPositiveIntegers(event)}">
+      <h3 id="Feedback4" style="display: none;"> placeholder</h3>
+      <h3 id="Question5" style="display: none;"> What is your fifth guess?</h3>
+      <input type="text" id="Input5" style="display: none;" onkeydown="if(event.key === 'Enter'){hint5()} else {return onlyPositiveIntegers(event)}">
+      <h3 id="Feedback5" style="display: none;"> placeholder</h3>
+      <h3 id="Question6" style="display: none;"> What is your sixth guess?</h3>
+      <input type="text" id="Input6" style="display: none;" onkeydown="if(event.key === 'Enter'){hint6()} else {return onlyPositiveIntegers(event)}">
+      <h3 id="Feedback6" style="display: none;"> placeholder</h3>
+      <h3 id="Question7" style="display: none;"> What is your seventh guess?</h3>
+      <input type="text" id="Input7" style="display: none;" onkeydown="if(event.key === 'Enter'){hint7()} else {return onlyPositiveIntegers(event)}">
+      <h3 id="Feedback7" style="display: none;"> placeholder</h3>
     </div>
+
     <script>
       answer = Math.floor(Math.random()*100+1)
+
       function onlyPositiveIntegers(event) {
         let allowed = [
           '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 
-          'Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'
+          'Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter'
         ];
         if (allowed.includes(event.key)) {
           return true; 
         } 
         else {
-          event.preventDefault(); // This blocks '.' and '-' and all letters
+          event.preventDefault();
           return false;
         }
-    }
-    function hint1(){
-      var guess = Number(document.getElementById("Input1").value);
-      if (guess === answer){
-        document.getElementById("Feedback1").innerText = "Congratulations! You guessed the number I was thinking of in 1 try."
       }
-      if (guess < answer){
-        document.getElementById("Feedback1").innerText = guess + " is less than the number I am thinking of."
+
+      function hint1(){
+        var guess = Number(document.getElementById("Input1").value);
+        if (guess === answer){
+          document.getElementById("Feedback1").innerText = "Congratulations! You guessed the number I was thinking of in 1 try."
+        }
+        if (guess < answer){
+          document.getElementById("Feedback1").innerText = guess + " is less than the number I am thinking of."
+        }
+        if (guess > answer){
+          document.getElementById("Feedback1").innerText = guess + " is greater than the number I am thinking of."
+        }
+        // FIXED SYNTAX BELOW
+        document.getElementById("Feedback1").style.display = "block";
+        document.getElementById("Question2").style.display = "block";
+        document.getElementById("Input2").style.display = "block";
       }
-      if (guess > answer){
-        document.getElementById("Feedback1").innerText = guess + " is greater than the number I am thinking of."
+
+      function hint2(){
+        var guess = Number(document.getElementById("Input2").value);
+        if (guess === answer){
+          document.getElementById("Feedback2").innerText = "Congratulations! You guessed the number I was thinking of in 2 tries."
+        }
+        if (guess < answer){
+          document.getElementById("Feedback2").innerText = guess + " is less than the number I am thinking of."
+        }
+        if (guess > answer){
+          document.getElementById("Feedback2").innerText = guess + " is greater than the number I am thinking of."
+        }
+        document.getElementById("Feedback2").style.display = "block";
+        document.getElementById("Question3").style.display = "block";
+        document.getElementById("Input3").style.display = "block";
       }
-      document.getElementById("Feedback1").style.display = "block";
-      document.getElementById("Question2").style.display = "block";
-      document.getElementById("Input2").style.display = "block";
-    }
-    function hint2(){
-      var guess = Number(document.getElementById("Input2").value);
-      if (guess === answer){
-        document.getElementById("Feedback2").innerText = "Congratulations! You guessed the number I was thinking of in 2 tries."
+
+      function hint3(){
+        var guess = Number(document.getElementById("Input3").value);
+        if (guess === answer){
+          document.getElementById("Feedback3").innerText = "Congratulations! You guessed the number I was thinking of in 3 tries."
+        }
+        if (guess < answer){
+          document.getElementById("Feedback3").innerText = guess + " is less than the number I am thinking of."
+        }
+        if (guess > answer){
+          document.getElementById("Feedback3").innerText = guess + " is greater than the number I am thinking of."
+        }
+        document.getElementById("Feedback3").style.display = "block";
+        document.getElementById("Question4").style.display = "block";
+        document.getElementById("Input4").style.display = "block";
       }
-      if (guess < answer){
-        document.getElementById("Feedback2").innerText = guess + " is less than the number I am thinking of."
+
+      function hint4(){
+        var guess = Number(document.getElementById("Input4").value);
+        if (guess === answer){
+          document.getElementById("Feedback4").innerText = "Congratulations! You guessed the number I was thinking of in 4 tries."
+        }
+        if (guess < answer){
+          document.getElementById("Feedback4").innerText = guess + " is less than the number I am thinking of."
+        }
+        if (guess > answer){
+          document.getElementById("Feedback4").innerText = guess + " is greater than the number I am thinking of."
+        }
+        document.getElementById("Feedback4").style.display = "block";
+        document.getElementById("Question5").style.display = "block";
+        document.getElementById("Input5").style.display = "block";
       }
-      if (guess > answer){
-        document.getElementById("Feedback2").innerText = guess + " is greater than the number I am thinking of."
+
+      function hint5(){
+        var guess = Number(document.getElementById("Input5").value);
+        if (guess === answer){
+          document.getElementById("Feedback5").innerText = "Congratulations! You guessed the number I was thinking of in 5 tries."
+        }
+        if (guess < answer){
+          document.getElementById("Feedback5").innerText = guess + " is less than the number I am thinking of."
+        }
+        if (guess > answer){
+          document.getElementById("Feedback5").innerText = guess + " is greater than the number I am thinking of."
+        }
+        document.getElementById("Feedback5").style.display = "block";
+        document.getElementById("Question6").style.display = "block";
+        document.getElementById("Input6").style.display = "block";
       }
-      document.getElementById("Feedback2").style.display = "block";
-      document.getElementById("Question3").style.display = "block";
-      document.getElementById("Input3").style.display = "block";
-    }
-    function hint3(){
-      var guess = Number(document.getElementById("Input3").value);
-      if (guess === answer){
-        document.getElementById("Feedback3").innerText = "Congratulations! You guessed the number I was thinking of in 3 tries."
+
+      function hint6(){
+        var guess = Number(document.getElementById("Input6").value);
+        if (guess === answer){
+          document.getElementById("Feedback6").innerText = "Congratulations! You guessed the number I was thinking of in 6 tries."
+        }
+        if (guess < answer){
+          document.getElementById("Feedback6").innerText = guess + " is less than the number I am thinking of."
+        }
+        if (guess > answer){
+          document.getElementById("Feedback6").innerText = guess + " is greater than the number I am thinking of."
+        }
+        document.getElementById("Feedback6").style.display = "block";
+        document.getElementById("Question7").style.display = "block";
+        document.getElementById("Input7").style.display = "block";
       }
-      if (guess < answer){
-        document.getElementById("Feedback3").innerText = guess + " is less than the number I am thinking of."
+
+      function hint7(){
+        var guess = Number(document.getElementById("Input7").value);
+        if (guess === answer){
+          document.getElementById("Feedback7").innerText = "Congratulations! You guessed the number I was thinking of in 7 tries."
+        }
+        else{
+          document.getElementById("Feedback7").innerText = "Wrong! The number I was thinking of was " + answer + " ."
+        }
+        document.getElementById("Feedback7").style.display = "block";
       }
-      if (guess > answer){
-        document.getElementById("Feedback3").innerText = guess + " is greater than the number I am thinking of."
-      }
-      document.getElementById("Feedback3").style.display = "block";
-      document.getElementById("Question4").style.display = "block";
-      document.getElementById("Input4").style.display = "block";
-    }
-    function hint4(){
-      var guess = Number(document.getElementById("Input4").value);
-      if (guess === answer){
-        document.getElementById("Feedback4").innerText = "Congratulations! You guessed the number I was thinking of in 4 tries."
-      }
-      if (guess < answer){
-        document.getElementById("Feedback4").innerText = guess + " is less than the number I am thinking of."
-      }
-      if (guess > answer){
-        document.getElementById("Feedback4").innerText = guess + " is greater than the number I am thinking of."
-      }
-      document.getElementById("Feedback4").style.display = "block";
-      document.getElementById("Question5").style.display = "block";
-      document.getElementById("Input5").style.display = "block";
-    }
-    function hint5(){
-      var guess = Number(document.getElementById("Input5").value);
-      if (guess === answer){
-        document.getElementById("Feedback5").innerText = "Congratulations! You guessed the number I was thinking of in 5 tries."
-      }
-      if (guess < answer){
-        document.getElementById("Feedback5").innerText = guess + " is less than the number I am thinking of."
-      }
-      if (guess > answer){
-        document.getElementById("Feedback5").innerText = guess + " is greater than the number I am thinking of."
-      }
-      document.getElementById("Feedback5").style.display = "block";
-      document.getElementById("Question5").style.display = "block";
-      document.getElementById("Input6").style.display = "block";
-    }
-    function hint6(){
-      var guess = Number(document.getElementById("Input6").value);
-      if (guess === answer){
-        document.getElementById("Feedback6").innerText = "Congratulations! You guessed the number I was thinking of in 6 tries."
-      }
-      if (guess < answer){
-        document.getElementById("Feedback6").innerText = guess + " is less than the number I am thinking of."
-      }
-      if (guess > answer){
-        document.getElementById("Feedback6").innerText = guess + " is greater than the number I am thinking of."
-      }
-      document.getElementById("Feedback6").style.display = "block";
-      document.getElementById("Question7").style.display = "block";
-      document.getElementById("Input7").style.display = "block";
-    }
-    function hint7(){
-      var guess = Number(document.getElementById("Input7").value);
-      if (guess === answer){
-        document.getElementById("Feedback7").innerText = "Congratulations! You guessed the number I was thinking of in 7 tries."
-      }
-      else{
-        document.getElementById("Feedback7").innerText = "Wrong! The number I was thinking of was " + answer + " ."
-      }
-      document.getElementById("Feedback7").style.display = "block";
-    }
-    
-      
     </script>
   </body>
 </html>
