@@ -1,40 +1,161 @@
-!DOCTYPE html> 
-
-<html> 
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Awesome Page</title>
+  <style>
+    /* ── Reset & base ── */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-    <title>My Awesome Page</title> 
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0f172a;       /* dark navy background */
+      color: #e2e8f0;
+      min-height: 100vh;
+      padding: 3rem 1.5rem;
+    }
 
-</head> 
+    /* ── Page header ── */
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
 
-<body> 
+    header h1 {
+      font-size: 2.5rem;
+      background: linear-gradient(90deg, #818cf8, #38bdf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
 
+    header p {
+      color: #94a3b8;
+      font-size: 1.1rem;
+    }
 
+    /* ── Grid of project cards ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1.25rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
 
-    <h1>Welcome to My Home Page!</h1> 
+    /* ── Each project card ── */
+    .card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 14px;
+      padding: 1.5rem 1.25rem;
+      text-decoration: none;        /* removes underline from link */
+      color: #e2e8f0;
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+      text-align: center;
+    }
 
-    <p>Check out some of my projects!</p> 
+    /* Hover effect — card lifts up */
+    .card:hover {
+      transform: translateY(-5px);
+      border-color: #6366f1;
+      box-shadow: 0 8px 24px rgba(99, 102, 241, 0.25);
+    }
 
-    <br>
+    .card .icon {
+      font-size: 2rem;
+    }
 
-    <a href="game1.html">Monster Clicker</a> <br>
+    .card .name {
+      font-weight: 600;
+      font-size: 1rem;
+    }
 
-    <a href="obstacle.html">Obstacle Game</a> <br>
+    .card .desc {
+      font-size: 0.8rem;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body>
 
-    <a href="Dice.html">Dice Simulator</a> <br>
+  <header>
+    <h1>My Projects 🚀</h1>
+    <p>Click any card to play!</p>
+  </header>
 
-    <a href="ColorFlipper.html">Color Flipper</a> <br>
+  <div class="grid">
 
-    <a href="Stopwatch.html">Stopwatch</a> <br>
+    <a href="game1.html" class="card">
+      <span class="icon">👾</span>
+      <span class="name">Monster Clicker</span>
+      <span class="desc">Click as fast as you can!</span>
+    </a>
 
-    <a href="Typinggame.html">Ultimate Typing Game</a> <br>
-    
-    <a href="RockPaperScissors.html">Rock Paper Scissors</a><br>
-    <a href="Counter.html">Counter</a> <br>
-    <a href="NumberGuesser.html">Number Guesser</a><br>
-    <a href="Hangman.html">Hangman Game</a>
+    <a href="obstacle.html" class="card">
+      <span class="icon">🏃</span>
+      <span class="name">Obstacle Game</span>
+      <span class="desc">Dodge and survive</span>
+    </a>
 
-</body> 
+    <a href="dice.html" class="card">
+      <span class="icon">🎲</span>
+      <span class="name">Dice Simulator</span>
+      <span class="desc">Roll your luck</span>
+    </a>
 
+    <a href="colorflipper.html" class="card">
+      <span class="icon">🎨</span>
+      <span class="name">Color Flipper</span>
+      <span class="desc">Random color generator</span>
+    </a>
+
+    <a href="stopwatch.html" class="card">
+      <span class="icon">⏱️</span>
+      <span class="name">Stopwatch</span>
+      <span class="desc">Track your time</span>
+    </a>
+
+    <a href="typinggame.html" class="card">
+      <span class="icon">⌨️</span>
+      <span class="name">Typing Game</span>
+      <span class="desc">Test your typing speed</span>
+    </a>
+
+    <a href="rockpaperscissors.html" class="card">
+      <span class="icon">✂️</span>
+      <span class="name">Rock Paper Scissors</span>
+      <span class="desc">Beat the computer</span>
+    </a>
+
+    <a href="counter.html" class="card">
+      <span class="icon">🔢</span>
+      <span class="name">Counter</span>
+      <span class="desc">Simple click counter</span>
+    </a>
+
+    <a href="numberguesser.html" class="card">
+      <span class="icon">🔍</span>
+      <span class="name">Number Guesser</span>
+      <span class="desc">Can you find the number?</span>
+    </a>
+
+    <a href="hangman.html" class="card">
+      <span class="icon">🪢</span>
+      <span class="name">Hangman</span>
+      <span class="desc">Guess the word</span>
+    </a>
+
+  </div>
+
+</body>
 </html>
