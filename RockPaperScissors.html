@@ -6,15 +6,89 @@
   <body>
     <div style="text-align:center;">
       <h1> Rock Paper Scissors</h1>
-      <button id = "rock" onclick = rockPlayed() style = "width: 120px; height: 200px; background-color:black;">
+      <br>
+      <button id = "rock" onclick = "rockPlayed()" style = "width: 120px; height: 200px; background-color:black;">
         <img src="Rock.png" alt="rock" style = "width: 100px; height: 180px;">
       </button>
-      <button id = "paper" onclick = paperPlayed() style = "width: 120px; height: 200px; background-color:black;">
+      <button id = "paper" onclick = "paperPlayed()" style = "width: 120px; height: 200px; background-color:black;">
         <img src="Paper.png" alt="paper"  style = "width: 100px; height: 180px;">
       </button>
-       <button id = "scissors" onclick = scissorPlayed() style = "width: 100px; height: 200px; background-color:black;">
+       <button id = "scissors" onclick = "scissorPlayed()" style = "width: 120px; height: 200px; background-color:black;">
         <img src="Scissors.png" alt="scissor"  style = "width: 100px; height: 180px;">
       </button>
+      <br>
+      <br>
+      <p id = "roundDisplay" style = "display: none;">No game played yet</p>
+      <p>Your Score: <span id = "playerScore" class="green-text">0</span></p>
+      <p> Computer Score: <span id = "computerScore" class="red-text">0</span></h1>
     </div>
+    <script>
+      var playerScore = 0;
+      var computerScore = 0;
+      var DisplayRound = document.getElementById("roundDisplay");
+      var ScoreofPlayer = document.getElementById("playerScore");
+      var ScoreofComputer = document.getElementById("computerScore");
+      function rockPlayed(){
+        var computer = Math.floor(Math.random() * 3) + 1;
+        if (computer === 1){
+          DisplayRound.innerText = "Tie! The computer played rock.";
+          DisplayRound.style.display = "block";
+        }
+        if (computer === 2){
+          DisplayRound.innerText = "You lost! The computer played paper.";
+          DisplayRound.style.display = "block";
+          computerScore ++;
+          ScoreofComputer.innerText = computerScore;
+        }
+        if (computer === 3){
+          DisplayRound.innerText = "You won! The computer played scissors.";
+          DisplayRound.style.display = "block";
+          playerScore ++;
+          ScoreofPlayer.innerText = playerScore;
+        }
+        
+        
+      }
+      function paperPlayed(){
+        var computer = Math.floor(Math.random() * 3) + 1;
+        if (computer === 1){
+          DisplayRound.innerText = "Tie! The computer played paper.";
+          DisplayRound.style.display = "block";
+        }
+        if (computer === 2){
+          DisplayRound.innerText = "You lost! The computer played scissors.";
+          DisplayRound.style.display = "block";
+          computerScore ++;
+          ScoreofComputer.innerText = computerScore;
+        }
+        if (computer === 3){
+          DisplayRound.innerText = "You won! The computer played rock.";
+          DisplayRound.style.display = "block";
+          playerScore ++;
+          ScoreofPlayer.innerText = playerScore;
+        }
+      }
+      function scissorPlayed(){
+        var computer = Math.floor(Math.random() * 3) + 1;
+        if (computer === 1){
+          DisplayRound.innerText = "Tie! The computer played scissor.";
+          DisplayRound.style.display = "block";
+        }
+        if (computer === 2){
+          DisplayRound.innerText = "You lost! The computer played rock.";
+          DisplayRound.style.display = "block";
+          computerScore ++;
+          ScoreofComputer.innerText = computerScore;
+        }
+        if (computer === 3){
+          DisplayRound.innerText = "You won! The computer played paper.";
+          DisplayRound.style.display = "block";
+          playerScore ++;
+          ScoreofPlayer.innerText = playerScore;
+        }
+      }
+      
+      
+    </script>
   </body>
 </html>
