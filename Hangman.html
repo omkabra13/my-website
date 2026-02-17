@@ -45,9 +45,9 @@
 <body>
     <div style="text-align: center;"> 
         <h1>Hangman Game</h1>
-        <button onclick="selectEasy()" style="width: 150px; height: 80px; font-size: 30px; background-color: Green; color: Black; border-radius: 15px;">Easy</button>
-        <button onclick="selectMedium()" style="width: 150px; height: 80px; font-size: 30px; background-color: Green; color: Black; border-radius: 15px;">Medium</button>
-        <button onclick="selectHard()" style="width: 150px; height: 80px; font-size: 30px; background-color: Green; color: Black; border-radius: 15px;">Hard</button>
+        <button onclick="selectEasy()">Easy</button>
+        <button onclick="selectMedium()">Medium</button>
+        <button onclick="selectHard()">Hard</button>
         
         <h2 id="word">Word: </h2>
         <h2 id="lives">Lives Left: </h2>
@@ -90,7 +90,7 @@
             document.getElementById("guessInput").disabled = false;
             document.getElementById("guessInput").value = "";
             document.getElementById("guessInput").focus();
-            
+            document.getElementById("playAgain").style.display = "none";
             updateUI();
         }
 
