@@ -29,54 +29,38 @@
       button:hover {
         background-color: #555;
       }
-      input {
-          padding: 0.5rem 1rem;
-          font-size: 1.2rem;
-          border-radius: 10px;
-          border: 2px solid white;
-          background-color: #333;
-          color: white;
-          text-align: center;
-          display: block;
-          margin: 0 auto;
-      }
       a {
         display: block;
+        text-align: center;
       }
       .chart {
         display: flex;
         flex-direction: column;
         align-items: center;
       }
-      
       .stats {
         display: flex;
-        width: 500px; /* same as canvas width */
+        width: 500px;
         justify-content: space-around;
         margin-top: 0.5rem;
         font-size: 0.9rem;
       }
-        
+      canvas {
+        border: 2px solid #444;
+      }
     </style>
   </head>
-
-
   <body>
-    
-    <br>
-    <br>
     <div style="text-align: center;">
-      <h1> Dice Simulator </h1>
+      <h1>Dice Simulator</h1>
+
+      <img id="dice" src="RealDice1.png" alt="the dice" style="width:300px;height:300px;">
+
       <br>
-      
-      <img id = "dice" src="RealDice1.png" alt="the dice" style = "width:300px;height:300px;">
+      <button id="roll" onclick="rollDice()">ROLL</button>
+      <button onclick="resetDice()">RESET</button>
       <br>
-      <br>
-      <button id = "roll" onclick = rollDice()>
-        ROLL
-      </button>
-      <br>
-      <p></p>
+
       <div class="chart">
         <canvas id="gameCanvas" width="500" height="500"></canvas>
         <div class="stats">
@@ -88,39 +72,76 @@
           <div id="Text6">6: 0/0 = 0%</div>
         </div>
       </div>
+
+      <a href="index.html"><button>Home Page</button></a>
+    </div>
+
     <script>
       var diceImg = document.getElementById("dice");
-      var x = 1;
       var frequency = [0,0,0,0,0,0];
       var canvas = document.getElementById("gameCanvas");
       var ctx = canvas.getContext("2d");
-      var total = 0
-     
-      
-      function rollDice(){
+      var total = 0;
+
+      // Preload all dice images
+      var diceImages = [];
+      for (let i = 1; i <= 6; i++) {
+        let img = new Image();
+        img.src = "RealDice" + i + ".png";
+        diceImages[i-1] = img;
+      }
+
+      function drawChart() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        for (let i = 0; i < 6; i++) {
+          let count = frequency[i];
+          if (count === 0) continue;
+
+          let size, gap;
+          if (count <= 6) {
+            size = 64;
+            gap = 16;
+          } else {
+            // canvas.height = size * count + (size/4) * (count - 1)
+            // solve for size:
+            size = canvas.height / (count + (count - 1) / 4);
+            gap = size / 4;
+          }
+
+          let xPos = 18 + i * 80;
+
+          for (let j = 0; j < count; j++) {
+            // j=0 is most recent (top), j=count-1 is oldest (bottom)
+            let yPos = canvas.height - size - j * (size + gap);
+            ctx.drawImage(diceImages[i], xPos, yPos, size, size);
+          }
+        }
+      }
+
+      function updateStats() {
+        for (let i = 0; i < 6; i++) {
+          let pct = total === 0 ? 0 : Math.floor(100 * frequency[i] / total);
+          document.getElementById("Text" + (i+1)).innerHTML =
+            (i+1) + ": " + frequency[i] + "/" + total + " = " + pct + "%";
+        }
+      }
+
+      function rollDice() {
         total += 1;
-        x = Math.floor((Math.random() * 6) + 1);
+        let x = Math.floor((Math.random() * 6) + 1);
         frequency[x-1] += 1;
-        diceImg.src = "RealDice"+x+".png";
-        var img = new Image();
-        img.src = "RealDice"+x+".png";
-        img.onload = function() {
-          ctx.drawImage(img, 18+(x-1)*80, 30+80*frequency[x-1], 64, 64);
-          
-        };        
-        var label1 = document.getElementById("Text1");
-        label1.innerHTML = frequency[0]+"/"+total+" = "+Math.floor(100*frequency[0]/total)+"%";
-        var label2 = document.getElementById("Text2");
-        label2.innerHTML = frequency[1]+"/"+total+" = "+Math.floor(100*frequency[1]/total)+"%";
-        var label3 = document.getElementById("Text3");
-        label3.innerHTML = frequency[2]+"/"+total+" = "+Math.floor(100*frequency[2]/total)+"%";
-        var label4 = document.getElementById("Text4");
-        label4.innerHTML = frequency[3]+"/"+total+" = "+Math.floor(100*frequency[3]/total)+"%";
-        var label5 = document.getElementById("Text5");
-        label5.innerHTML = frequency[4]+"/"+total+" = "+Math.floor(100*frequency[4]/total)+"%";
-        var label6 = document.getElementById("Text6");
-        label6.innerHTML = frequency[5]+"/"+total+" = "+Math.floor(100*frequency[5]/total)+"%";
-        
+        diceImg.src = "RealDice" + x + ".png";
+        drawChart();
+        updateStats();
+      }
+
+      function resetDice() {
+        frequency = [0,0,0,0,0,0];
+        total = 0;
+        diceImg.src = "RealDice1.png";
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        updateStats();
       }
     </script>
   </body>
