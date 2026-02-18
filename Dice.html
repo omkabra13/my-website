@@ -38,15 +38,27 @@
         flex-direction: column;
         align-items: center;
       }
+      canvas {
+        border: 2px solid #444;
+        border-radius: 8px;
+      }
       .stats {
         display: flex;
         width: 500px;
         justify-content: space-around;
-        margin-top: 0.5rem;
-        font-size: 0.9rem;
+        margin-top: 0.75rem;
       }
-      canvas {
-        border: 2px solid #444;
+      .stat-box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.25rem;
+        font-size: 0.78rem;
+      }
+      .stat-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
       }
     </style>
   </head>
@@ -57,19 +69,37 @@
       <img id="dice" src="RealDice1.png" alt="the dice" style="width:300px;height:300px;">
 
       <br>
-      <button id="roll" onclick="rollDice()">ROLL</button>
+      <button onclick="rollDice()">ROLL</button>
       <button onclick="resetDice()">RESET</button>
-      <br>
+      <br><br>
 
       <div class="chart">
         <canvas id="gameCanvas" width="500" height="500"></canvas>
         <div class="stats">
-          <div id="Text1">0/0 = 0%</div>
-          <div id="Text2">0/0 = 0%</div>
-          <div id="Text3">0/0 = 0%</div>
-          <div id="Text4">0/0 = 0%</div>
-          <div id="Text5">0/0 = 0%</div>
-          <div id="Text6">0/0 = 0%</div>
+          <div class="stat-box">
+            <div class="stat-dot" style="background:#ff6b6b"></div>
+            <div id="Text1">0/0 = 0%</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-dot" style="background:#ffa94d"></div>
+            <div id="Text2">0/0 = 0%</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-dot" style="background:#ffe066"></div>
+            <div id="Text3">0/0 = 0%</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-dot" style="background:#69db7c"></div>
+            <div id="Text4">0/0 = 0%</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-dot" style="background:#74c0fc"></div>
+            <div id="Text5">0/0 = 0%</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-dot" style="background:#da77f2"></div>
+            <div id="Text6">0/0 = 0%</div>
+          </div>
         </div>
       </div>
 
@@ -82,36 +112,26 @@
       var canvas = document.getElementById("gameCanvas");
       var ctx = canvas.getContext("2d");
       var total = 0;
-
-      // Preload all dice images
-      var diceImages = [];
-      for (let i = 1; i <= 6; i++) {
-        let img = new Image();
-        img.src = "RealDice" + i + ".png";
-        diceImages[i-1] = img;
-      }
+      var colors = ["#ff6b6b", "#ffa94d", "#ffe066", "#69db7c", "#74c0fc", "#da77f2"];
 
       function drawChart() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
+
         var colWidth = canvas.width / 6;
         var maxCount = Math.max(...frequency);
-      
+
         for (let i = 0; i < 6; i++) {
           if (frequency[i] === 0) continue;
-      
-          // height of bar is proportional to how many times it was rolled
+
           var barHeight = (frequency[i] / maxCount) * canvas.height;
           var barWidth = colWidth * 0.6;
           var xPos = colWidth * i + (colWidth * 0.2);
           var yPos = canvas.height - barHeight;
-      
-          // pick a different color for each number
-          var colors = ["#ff6b6b", "#ffa94d", "#ffe066", "#69db7c", "#74c0fc", "#da77f2"];
+
           ctx.fillStyle = colors[i];
           ctx.fillRect(xPos, yPos, barWidth, barHeight);
-      
-          // draw the dice number inside the bar
+
+          // draw dice number inside bar
           ctx.fillStyle = "white";
           ctx.font = "bold 16px Poppins";
           ctx.textAlign = "center";
@@ -122,7 +142,7 @@
       function updateStats() {
         for (let i = 0; i < 6; i++) {
           let pct = total === 0 ? 0 : Math.floor(100 * frequency[i] / total);
-          document.getElementById("Text" + (i+1)).innerHTML =
+          document.getElementById("Text" + (i + 1)).innerHTML =
             frequency[i] + "/" + total + " = " + pct + "%";
         }
       }
@@ -130,14 +150,14 @@
       function rollDice() {
         total += 1;
         let x = Math.floor((Math.random() * 6) + 1);
-        frequency[x-1] += 1;
+        frequency[x - 1] += 1;
         diceImg.src = "RealDice" + x + ".png";
         drawChart();
         updateStats();
       }
 
       function resetDice() {
-        frequency = [0,0,0,0,0,0];
+        frequency = [0, 0, 0, 0, 0, 0];
         total = 0;
         diceImg.src = "RealDice1.png";
         ctx.clearRect(0, 0, canvas.width, canvas.height);
