@@ -93,29 +93,29 @@
 
       function drawChart() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-
+      
+        var colWidth = canvas.width / 6;
+        var maxCount = Math.max(...frequency);
+      
         for (let i = 0; i < 6; i++) {
-          let count = frequency[i];
-          if (count === 0) continue;
-
-          let size, gap;
-          if (count <= 6) {
-            size = 64;
-            gap = 16;
-          } else {
-            // canvas.height = size * count + (size/4) * (count - 1)
-            // solve for size:
-            size = canvas.height / (count + (count - 1) / 4);
-            gap = size / 4;
-          }
-
-          let xPos = 18 + i * 80;
-
-          for (let j = 0; j < count; j++) {
-            // j=0 is most recent (top), j=count-1 is oldest (bottom)
-            let yPos = canvas.height - size - j * (size + gap);
-            ctx.drawImage(diceImages[i], xPos, yPos, size, size);
-          }
+          if (frequency[i] === 0) continue;
+      
+          // height of bar is proportional to how many times it was rolled
+          var barHeight = (frequency[i] / maxCount) * canvas.height;
+          var barWidth = colWidth * 0.6;
+          var xPos = colWidth * i + (colWidth * 0.2);
+          var yPos = canvas.height - barHeight;
+      
+          // pick a different color for each number
+          var colors = ["#ff6b6b", "#ffa94d", "#ffe066", "#69db7c", "#74c0fc", "#da77f2"];
+          ctx.fillStyle = colors[i];
+          ctx.fillRect(xPos, yPos, barWidth, barHeight);
+      
+          // draw the dice number inside the bar
+          ctx.fillStyle = "white";
+          ctx.font = "bold 16px Poppins";
+          ctx.textAlign = "center";
+          ctx.fillText(i + 1, xPos + barWidth / 2, canvas.height - 8);
         }
       }
 
